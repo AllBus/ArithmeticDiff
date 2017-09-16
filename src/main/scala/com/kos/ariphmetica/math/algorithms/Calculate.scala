@@ -206,6 +206,11 @@ object Calculate {
 							case `ln` ⇒ C1
 							case _ ⇒ MathTerm2(op, x)
 						}
+					case x@`pi` ⇒
+						op match {
+							case `deg` ⇒ C180
+							case _ ⇒ MathTerm2(op, x)
+						}
 
 					case x@MathTerm2(`sqr`, ff) ⇒
 						op match {

@@ -18,6 +18,7 @@ object Fun {
 		if (args.size==2){
 			funName match {
 				case "log" ⇒ №((Operator.abs, args.head), log, args(1))
+				case "mod" ⇒ №((Operator.abs, args.head), mod, args(1))
 				case _ ⇒ CalcException.undefinedFunction(funName)
 			}
 		}else
@@ -55,7 +56,7 @@ object Fun {
 					case "cth" ⇒ (cth, x)
 
 					case "ln" ⇒ (ln, x)
-					case "lg" ⇒ (lg, x)
+					case "lg" | "log" ⇒ (lg, x)
 					case "sqrt" ⇒ (sqrt, x)
 
 					case "sgn" | "sign" ⇒ (sgn, x)
