@@ -50,7 +50,7 @@ object CopositeFunction {
 
 	def communicative(op: CommunicateOperator, a: MathTerm): Seq[MathTerm] = {
 		a match {
-			case MathTerm3(x, `op`, y) ⇒ communicative(op, ^(x)) ++ communicative(op, ^(y))
+			case MathTerm3(x, `op`, y) ⇒ communicative(op, x) ++ communicative(op, y)
 			case x ⇒ Seq(x)
 		}
 	}
@@ -62,6 +62,7 @@ object CopositeFunction {
 		//todo: надо проверять наличие abs
 		var b=terms.map(extractPower).sorted
 
+	//	println(b)
 		var (tx,tn)=b.head
 		var r=Seq.newBuilder[MathTerm]
 		b=b.tail
@@ -100,68 +101,30 @@ object CopositeFunction {
 		}
 	}
 
-	def communicative(op: CommunicateOperator, terms: Seq[MathTerm]): MathTerm = {
-	//	val a = terms.sorted(MathTerm)
+	def communicative(op: CommunicateOperator, termsComps: Seq[MathTerm]): MathTerm = {
 
-//		val b:Seq[MathTerm] =op match {
-////			case `add` ⇒
-////			val g=a.groupBy {
-////				case MathTerm3(x ,`mul`, y) ⇒ 1
-////				case z ⇒ 0
-////			}
-////
-//
-//			case `mul` ⇒
-//			val g=a.groupBy {
-//				case MathTerm2(`pow_1`, y) ⇒ 1
-//				case MathTerm3(x, `pow`, y) ⇒ 2
-//				case y ⇒ 	0
-//			}
-//
-//			val c=Seq(g.get(0),
-//				g.get(1),
-//				g.get(2).map {
-//					gg ⇒
-//						gg.groupBy { case MathTerm3(x, `pow`, y) ⇒ x }.
-//							mapValues {
-//								_.map {
-//									case MathTerm3(x, `pow`, y) ⇒ y
-//								}
-//							}.map { case (k, v) ⇒
-//							MathTerm3(k, pow, v.tail.foldLeft(v.head)(MathTerm3(_, mul, _)))
-//						}
-//				}).flatten.flatten
-//
-//			c
-//
-////
-//			case _ ⇒ a
-//		}
+		val terms= termsComps.map(^>)
 
-
-
-
-	//	b.tail.foldLeft(b.head)(MathTerm3(_, op, _))
-				op match {
-					case `add` ⇒
-						val a = terms.sorted(MathTerm)
-						a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
-					case `mul` ⇒ composeMul( terms)
-					case _ ⇒
-						val a = terms.sorted(MathTerm)
-						a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
-				}
+		op match {
+			case `add` ⇒
+				val a = terms.sorted(MathTerm)
+				a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
+			case `mul` ⇒ composeMul( terms)
+			case _ ⇒
+				val a = terms.sorted(MathTerm)
+				a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
+		}
 	}
 
-	def ^(x: MathTerm) = compose(x)
+	def ^>(x: MathTerm) = compose(x)
 
 	def compose(arg: MathTerm): MathTerm = {
 
 		arg match {
-			case MathTerm3(x, op: CommunicateOperator, y) ⇒ communicative(op, communicative(op, ^(x)) ++ communicative(op, ^(y)))
-			case MathTerm3(x, op, y) ⇒ MathTerm3(^(x), op, ^(y))
-			case MathTerm2(f, x) ⇒ MathTerm2(f, ^(x))
-			case DiffTerm(f, dx: String) ⇒ DiffTerm(^(f), dx)
+			case MathTerm3(x, op: CommunicateOperator, y) ⇒ communicative(op, communicative(op, x) ++ communicative(op, y))
+			case MathTerm3(x, op, y) ⇒ MathTerm3(^>(x), op, ^>(y))
+			case MathTerm2(f, x) ⇒ MathTerm2(f, ^>(x))
+			case DiffTerm(f, dx: String) ⇒ DiffTerm(^>(f), dx)
 
 			case x ⇒ x
 		}
