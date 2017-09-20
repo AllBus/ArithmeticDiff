@@ -206,11 +206,6 @@ object Calculate {
 							case `ln` ⇒ C1
 							case _ ⇒ MathTerm2(op, x)
 						}
-					case x@`pi` ⇒
-						op match {
-							case `deg` ⇒ C180
-							case _ ⇒ MathTerm2(op, x)
-						}
 
 					case x@MathTerm2(`sqr`, ff) ⇒
 						op match {
@@ -220,8 +215,8 @@ object Calculate {
 
 					case x ⇒ TrigonometryCalc.calc( MathTerm2(op, x))
 				}
-			case DiffTerm(f,dx:String) ⇒
-				DiffTerm(digit(^(f)),dx)
+
+			case DiffTerm(f,dx:String) ⇒ DiffTerm(digit(^(f)),dx)
 
 			case x ⇒ x
 		}
@@ -362,8 +357,7 @@ object Calculate {
 						}
 					case x ⇒ MathTerm2(op, x)
 				}
-			case DiffTerm(f,dx:String) ⇒
-				DiffTerm(digit(^(f)),dx)
+			case DiffTerm(f,dx:String) ⇒ DiffTerm(digit(^(f)),dx)
 
 			case x ⇒ x
 		}

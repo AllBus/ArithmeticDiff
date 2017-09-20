@@ -58,6 +58,12 @@ object TrigonometryCalc {
 					case `pi_3` ⇒ /(CSQRT_3)
 					case _ ⇒ term
 				}
+			case MathTerm2(`deg`, x) ⇒
+				x match {
+					case `pi` ⇒ C180
+					case C0 ⇒ C0
+					case _ ⇒ term
+				}
 			case x ⇒ x
 		}
 	}
