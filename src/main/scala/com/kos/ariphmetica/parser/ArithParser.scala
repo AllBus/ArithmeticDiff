@@ -16,8 +16,8 @@ abstract class ArithParser(val input: ParserInput
 
 	def divMethod: (MathTerm,MathTerm) ⇒ MathTerm
 	def powMethod: (MathTerm,MathTerm) ⇒ MathTerm
-	def functionMethod: (String,collection.immutable.Seq[MathTerm]) ⇒ MathTerm = Fun.apply
-	def functionAbsMethod: (String,collection.immutable.Seq[MathTerm]) ⇒ MathTerm = Fun.absApply
+	def functionMethod: (String,String, collection.immutable.Seq[MathTerm]) ⇒ MathTerm = Fun.apply
+	def functionAbsMethod: (String,String ,collection.immutable.Seq[MathTerm]) ⇒ MathTerm = Fun.absApply
 
 
 	def InputLine = rule {
@@ -73,12 +73,12 @@ abstract class ArithParser(val input: ParserInput
 
 	def values: Rule1[MathTerm] = rule {
 			( floatingPointNumber ~> { a => tryToNum(a) }
-			| word ~ "(" ~ funArguments ~ ")" ~> { functionMethod }
-			| word ~ "|" ~ funArguments ~ "|" ~> { functionAbsMethod }
+			| word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { functionMethod }
+			| word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { functionAbsMethod }
 			| word ~> MathConst
-			| minus ~ word ~ "(" ~ funArguments ~ ")" ~> { (func, args) ⇒ MathTerm2(Operator.neg, functionMethod(func, args)) }
+			| minus ~ word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { (func,shtrih, args) ⇒ MathTerm2(Operator.neg, functionMethod(func,shtrih, args)) }
+			| minus ~ word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { (func,shtrih, args) ⇒ MathTerm2(Operator.neg, functionAbsMethod(func,shtrih, args)) }
 			| minus ~ word ~> (a ⇒ MathTerm2(Operator.neg, MathConst(a)))
-			//| "("~ top ~ ")'" ~word ~> ((a,dx) ⇒ DiffTerm(a,dx))
 			| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word ~> (DiffTerm(_: MathTerm, _)))
 			| "|" ~ top ~ "|" ~> (a ⇒ MathTerm2(Operator.abs, a))
 			| "√" ~ values ~> { (a: MathTerm) ⇒ MathTerm2(Operator.sqrt, a) }

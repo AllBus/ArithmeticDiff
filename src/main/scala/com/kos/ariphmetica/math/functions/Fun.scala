@@ -2,7 +2,7 @@ package com.kos.ariphmetica.math.functions
 
 import com.kos.ariphmetica.Num
 import com.kos.ariphmetica.math.Operator._
-import com.kos.ariphmetica.math.terms.{MathTerm, MathTerm2}
+import com.kos.ariphmetica.math.terms.{MathTerm, MathTerm2, UndefinedDiff}
 import com.kos.ariphmetica.math._
 
 import scala.collection.immutable.Seq
@@ -11,15 +11,18 @@ import scala.collection.immutable.Seq
   * Created by Kos on 20.03.2017.
   */
 object Fun {
-	def absApply(funName: String, args: Seq[MathTerm]):MathTerm = {
+	def absApply(funName: String,diffCount:String, args: Seq[MathTerm]):MathTerm = {
 		if (args.size == 1)
-			Fun.apply(funName, MathTerm2(Operator.abs, args.head))
+			Fun.apply(funName, diffCount,MathTerm2(Operator.abs, args.head))
 		else
 		if (args.size==2){
+			if (diffCount.nonEmpty)
+				CalcException.undefinedFunction(funName+diffCount)
+
 			funName match {
 				case "log" ⇒ №((Operator.abs, args.head), log, args(1))
 				case "mod" ⇒ №((Operator.abs, args.head), mod, args(1))
-				case _ ⇒ CalcException.undefinedFunction(funName)
+				case _ ⇒ CalcException.undefinedFunction(funName) //(Operator.abs,new ArithFun(funName,empty,args)) //
 			}
 		}else
 			CalcException.undefinedFunction(funName)
@@ -27,7 +30,11 @@ object Fun {
 
 	import Operator._
 
-	def apply(funName: String, x:MathTerm):MathTerm ={
+	def OneFun(name:String, x :MathTerm) = MathTerm2(new Func1(name),x)
+
+	def apply(funNameA: String,diffCount:String, x:MathTerm):MathTerm ={
+
+		val funName=funNameA+diffCount
 
 		funName(0) match {
 			case 'a' ⇒
@@ -42,7 +49,7 @@ object Fun {
 					case "arcth" ⇒ (arcth, x)
 					case "abs" ⇒ (abs, x)
 
-					case _ ⇒ new ArithFun(funName, empty, Seq(x))
+					case _ ⇒ OneFun(funName, x)
 				}
 			case _ ⇒
 				funName match {
@@ -63,21 +70,21 @@ object Fun {
 					case "exp" ⇒ (exp, x)
 					case "deg" ⇒ (deg, x)
 					case "rad" ⇒ (rad, x)
-					case _ ⇒ new ArithFun(funName, empty, Seq(x))
+					case _ ⇒ OneFun(funName, x)
 				}
 		}
 	}
 
-	def apply(funName: String, args: Seq[MathTerm]): MathTerm = {
+	def apply(funName: String,diffCount:String, args: Seq[MathTerm]): MathTerm = {
 		if (funName.length() <= 0) {
 			return new ArithFun(funName, empty, args)
 		} else if (args.size == 1) {
-			apply(funName,args.head)
+			apply(funName,diffCount,args.head)
 		} else if (args.size == 2) {
 			funName match {
 				case "log" ⇒ (args(0), log, args(1))
 				case "mod" ⇒ (args(0), mod, args(1))
-				case _ ⇒ new ArithFun(funName, empty, args)
+				case _ ⇒ new ArithFun(funName+diffCount, empty, args)
 			}
 		} else
 			funName match {
@@ -88,7 +95,7 @@ object Fun {
 				//      case "sum" ⇒ new ArithFun(funName, args, sum)
 				//      case "ln" => new ArithFun(funName, args, ln)
 				//case "log" => new ArithFun(funName, args, log)
-				case _ ⇒ new ArithFun(funName, empty, args)
+				case _ ⇒ new ArithFun(funName+diffCount, empty, args)
 			}
 	}
 	//  val sin = new Funcs(Math.sin)
@@ -102,6 +109,20 @@ object Fun {
 	val empty = new Funcs(x ⇒ x)
 
 }
+
+//case class OneFun(funName: String,arg: MathTerm) extends MathTerm {
+//	override def toString = s"$funName($arg)"
+//
+//	override def orderValue: Int = 28
+//
+//	override def compareIndex(that:MathTerm): Int ={
+//		that match {
+//			case x:OneFun ⇒ funName.compare(x.funName)
+//			case _ ⇒ 0
+//		}
+//	}
+//
+//}
 
 class ArithFun(val funName: String, op: AnyOperator, val args: Seq[MathTerm]) extends MathTerm{
 
@@ -118,7 +139,7 @@ class ArithFun(val funName: String, op: AnyOperator, val args: Seq[MathTerm]) ex
 	override def toString = s"$funName(${args.mkString(",")})"
 
 	def head = args.head
-	def two = (if (args.size >= 2) args(1) else C0)
+	def two = if (args.size >= 2) args(1) else C0
 
 	override def equals(other: Any): Boolean = {
 		other match {
@@ -126,6 +147,8 @@ class ArithFun(val funName: String, op: AnyOperator, val args: Seq[MathTerm]) ex
 			case _ ⇒ false
 		}
 	}
+
+	var dif: (MathTerm) ⇒ MathTerm = (f) ⇒ f
 }
 
 class AnyOperator {

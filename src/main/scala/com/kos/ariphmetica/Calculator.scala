@@ -1,6 +1,7 @@
 package com.kos.ariphmetica
 
 import com.kos.ariphmetica.math.Operator
+import com.kos.ariphmetica.math.algorithms.classic.ClassicOperator
 import com.kos.ariphmetica.math.algorithms.{Calculate, CopositeFunction}
 import com.kos.ariphmetica.math.terms.MathTerm
 import com.kos.ariphmetica.parser.{ArithParser, PowArithParser, StandardArithParser}
@@ -43,7 +44,7 @@ object Calculator {
 	  * Инициализировать параметры классического стиля
 	  */
 	def initClassic(): Unit = {
-		Operator.setupClassicDiff()
+		ClassicOperator.setupClassicDiff()
 		parser = new StandardArithParser(_)
 	}
 
@@ -94,7 +95,7 @@ object Calculator {
 	  * @return true если содержит иначе false
 	  */
 	def containsDiff(f:MathTerm):Boolean = {
-		Operator.containsDiff(f)
+		ClassicOperator.containsDiff(f)
 	}
 
 	/**

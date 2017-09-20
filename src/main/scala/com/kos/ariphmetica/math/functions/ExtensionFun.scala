@@ -9,25 +9,25 @@ import scala.collection.immutable.Seq
   * Created by Kos on 24.03.2017.
   */
 object ExtensionFun {
-	def absApply(funName: String, args: Seq[MathTerm]):MathTerm = {
-		if (args.size == 1)
-			apply(funName, MathTerm2(Operator.abs, args.head))
-		else
-			Fun.absApply(funName,args)
-	}
-
-	def apply(funName: String, x:MathTerm):MathTerm ={
-
-		Fun.apply(funName,x)
-	}
-
-	def apply(funName: String, args: Seq[MathTerm]): MathTerm = {
-		if (args.size==1){
-			return apply(funName,args.head)
-		}
-
-		Fun.apply(funName,args)
-	}
+//	def absApply(funName: String, args: Seq[MathTerm]):MathTerm = {
+//		if (args.size == 1)
+//			apply(funName, MathTerm2(Operator.abs, args.head))
+//		else
+//			Fun.absApply(funName,args)
+//	}
+//
+//	def apply(funName: String, x:MathTerm):MathTerm ={
+//
+//		Fun.apply(funName,x)
+//	}
+//
+//	def apply(funName: String, args: Seq[MathTerm]): MathTerm = {
+//		if (args.size==1){
+//			return apply(funName,args.head)
+//		}
+//
+//		Fun.apply(funName,args)
+//	}
 
 	val period = new Func1("period")
 	val floor = new Func1("floor")

@@ -1,7 +1,8 @@
 package com.kos.ariphmetica.math.algorithms
 
-import com.kos.ariphmetica.math.{C0, C1, CalcException,  Func1, Operator}
+import com.kos.ariphmetica.math.{C0, C1, CalcException, Func1, Operator}
 import com.kos.ariphmetica.math.Operator._
+import com.kos.ariphmetica.math.functions.ArithFun
 import com.kos.ariphmetica.math.terms._
 
 /**
@@ -102,7 +103,8 @@ object Difference {
 					C0
 
 			case _:Digit ⇒ C0 //Digit
-
+//			case x :ArithFun ⇒ UndefinedDiff(x,dx)
+//			case x :UndefinedDiff ⇒ x
 			case x ⇒ CalcException.differenceNotSupportElement(x)
 		}
 	}

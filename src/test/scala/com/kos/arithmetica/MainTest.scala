@@ -2,6 +2,7 @@ package com.kos.arithmetica
 
 import com.kos.ariphmetica.math.Operator
 import com.kos.ariphmetica.math.algorithms.CopositeFunction
+import com.kos.ariphmetica.math.algorithms.classic.ClassicOperator
 import com.kos.ariphmetica.math.terms.MathConst
 import org.scalatest.{FlatSpec, Matchers}
 /**
@@ -29,7 +30,7 @@ class MainTest extends FlatSpec with Matchers {
 			 f → f.dif
 		}
 
-		Operator.setupClassicDiff()
+		ClassicOperator.setupClassicDiff()
 
 		val x = MathConst("x")
 		for (f ← pf){
@@ -47,7 +48,7 @@ class MainTest extends FlatSpec with Matchers {
 			f → f.dif
 		}
 
-		Operator.setupClassicDiff()
+		ClassicOperator.setupClassicDiff()
 
 		val x = MathConst("x")
 		for (f ← pf){
@@ -63,7 +64,7 @@ class MainTest extends FlatSpec with Matchers {
 			(f , f.dif , f.difLeft , f.difRight)
 		}
 
-		Operator.setupClassicDiff()
+		ClassicOperator.setupClassicDiff()
 
 		val x = MathConst("x")
 		val y = MathConst("y")
@@ -87,7 +88,7 @@ class MainTest extends FlatSpec with Matchers {
 			(f , f.dif , f.difLeft , f.difRight)
 		}
 
-		Operator.setupClassicDiff()
+		ClassicOperator.setupClassicDiff()
 
 		val x = MathConst("x")
 		val y = MathConst("y")
