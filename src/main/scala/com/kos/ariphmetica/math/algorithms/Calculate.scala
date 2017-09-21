@@ -30,20 +30,20 @@ object Calculate {
 
 			case MathTerm3(f, op: Operator, g) ⇒
 				(digit(^(f)), digit(^(g))) match {
-					case (x:Digit,MathTerm2(`neg`,y)) ⇒
+					case (x:Digit,yv@MathTerm2(`neg`,y)) ⇒
 						op match {
 							case `mul` if !x.overNegative => MathTerm3(x.negative, mul, y )
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ MathTerm3(x, op, yv)
 						}
-					case (MathTerm2(`neg`,x), y:Digit) ⇒
+					case (xv@MathTerm2(`neg`,x), y:Digit) ⇒
 						op match {
 							case `mul` if !y.overNegative  => MathTerm3(x, mul, y.negative )
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ MathTerm3(xv, op, y)
 						}
-					case (MathTerm2(`neg`,x), MathTerm2(`neg`,y)) ⇒
+					case (xv@MathTerm2(`neg`,x), yv@MathTerm2(`neg`,y)) ⇒
 						op match {
 							case `mul` => MathTerm3(x, mul, y )
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ MathTerm3(xv, op, yv)
 						}
 
 					case (x, y: Digit0) ⇒
@@ -173,7 +173,7 @@ object Calculate {
 
 							case `arch` ⇒ C0
 
-							case _ ⇒ MathTerm2(op, x)
+							case _ ⇒  TrigonometryCalc.calc( MathTerm2(op, x))
 						}
 					case x: Digit_1 ⇒
 						op match {
@@ -191,7 +191,7 @@ object Calculate {
 							case `arctg` ⇒ (neg, pi_4)
 							case `arcctg` ⇒ (C3, mul, pi_4)
 
-							case _ ⇒ MathTerm2(op, x)
+							case _ ⇒  TrigonometryCalc.calc( MathTerm2(op, x))
 						}
 
 					case x:IntDigit ⇒
@@ -199,7 +199,14 @@ object Calculate {
 							case `sqr`if !x.overMul(x) ⇒  x * x
 							case `abs`if !x.overNegative ⇒ x.abs
 							case `neg`if !x.overNegative ⇒ x.negative
-							case _ ⇒ MathTerm2(op, x)
+							case `sqrt` ⇒
+								val a=Math.sqrt(x.value).toLong
+								if (a*a == x.value){
+									IntDigit(a)
+								}else {
+									MathTerm2(op, x)
+								}
+							case _ ⇒ TrigonometryCalc.calc( MathTerm2(op, x))
 						}
 					case x@`e` ⇒
 						op match {
@@ -210,8 +217,9 @@ object Calculate {
 					case x@MathTerm2(`sqr`, ff) ⇒
 						op match {
 							case `sqr` ⇒ MathTerm3(ff, pow, C4)
-							case _ ⇒ MathTerm2(op, x)
+							case _ ⇒ TrigonometryCalc.calc(MathTerm2(op, x))
 						}
+
 
 					case x ⇒ TrigonometryCalc.calc( MathTerm2(op, x))
 				}

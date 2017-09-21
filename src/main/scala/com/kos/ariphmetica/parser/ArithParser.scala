@@ -43,14 +43,20 @@ abstract class ArithParser(val input: ParserInput
 	}
 
 
+
 	def expr: Rule1[MathTerm] = rule {
-		term ~ zeroOrMore(
+		termFirst ~ zeroOrMore(
 			"+" ~ term ~> (MathTerm3(_: MathTerm, Operator.add, _))
 			| minus ~ term ~> (MathTerm3(_: MathTerm, Operator.sub, _))
 			//			| "−" ~ term ~> (MathTerm3(_: MathTerm, Operator.sub, _))
 		) // ~> operators
 	}
 
+	def termFirst: Rule1[MathTerm] = rule {
+		(minus ~ term ~> {MathTerm2(Operator.neg, _)}
+		| term
+		)
+	}
 
 	def term: Rule1[MathTerm] = rule {
 		factor ~ zeroOrMore(
@@ -73,16 +79,19 @@ abstract class ArithParser(val input: ParserInput
 
 	def values: Rule1[MathTerm] = rule {
 			( floatingPointNumber ~> { a => tryToNum(a) }
-			| word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { functionMethod }
-			| word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { functionAbsMethod }
-			| word ~> MathConst
-			| minus ~ word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { (func,shtrih, args) ⇒ MathTerm2(Operator.neg, functionMethod(func,shtrih, args)) }
-			| minus ~ word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { (func,shtrih, args) ⇒ MathTerm2(Operator.neg, functionAbsMethod(func,shtrih, args)) }
-			| minus ~ word ~> (a ⇒ MathTerm2(Operator.neg, MathConst(a)))
-			| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word ~> (DiffTerm(_: MathTerm, _)))
-			| "|" ~ top ~ "|" ~> (a ⇒ MathTerm2(Operator.abs, a))
-			| "√" ~ values ~> { (a: MathTerm) ⇒ MathTerm2(Operator.sqrt, a) }
+	//		| minus ~ minusValues ~> { MathTerm2(Operator.neg,_) }
+			| minusValues
 			)
+	}
+
+	def minusValues:  Rule1[MathTerm] = rule {
+		( word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { functionMethod }
+		| word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { functionAbsMethod }
+		| word ~> MathConst
+		| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word ~> (DiffTerm(_: MathTerm, _)))
+		| "|" ~ top ~ "|" ~> (a ⇒ MathTerm2(Operator.abs, a))
+		| "√" ~ values ~> { (a: MathTerm) ⇒ MathTerm2(Operator.sqrt, a) }
+		)
 	}
 
 

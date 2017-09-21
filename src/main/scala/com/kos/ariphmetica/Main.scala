@@ -32,6 +32,7 @@ object Main {
 					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
 					println(s"$i} " + OutExpression(dif))
 					dif = Calculator.simpleCalc(dif)
+				//	dif =Calculate.simpleCalc(CopositeFunction.composePow(CopositeFunction.compose(dif)))
 					println(s"$i) " + OutExpression(dif))
 
 				} while (Calculator.containsDiff(dif) && i < 100)
