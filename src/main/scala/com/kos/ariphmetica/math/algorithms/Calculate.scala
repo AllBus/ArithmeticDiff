@@ -30,21 +30,7 @@ object Calculate {
 
 			case MathTerm3(f, op: Operator, g) ⇒
 				(digit(^(f)), digit(^(g))) match {
-					case (x:Digit,yv@MathTerm2(`neg`,y)) ⇒
-						op match {
-							case `mul` if !x.overNegative => MathTerm3(x.negative, mul, y )
-							case _ ⇒ MathTerm3(x, op, yv)
-						}
-					case (xv@MathTerm2(`neg`,x), y:Digit) ⇒
-						op match {
-							case `mul` if !y.overNegative  => MathTerm3(x, mul, y.negative )
-							case _ ⇒ MathTerm3(xv, op, y)
-						}
-					case (xv@MathTerm2(`neg`,x), yv@MathTerm2(`neg`,y)) ⇒
-						op match {
-							case `mul` => MathTerm3(x, mul, y )
-							case _ ⇒ MathTerm3(xv, op, yv)
-						}
+
 
 					case (x, y: Digit0) ⇒
 						op match {
@@ -110,6 +96,40 @@ object Calculate {
 							}
 							case _ ⇒ MathTerm3(x, op, y)
 						}
+
+					case (xv@MathTerm2(`neg`,x), yv@MathTerm2(`neg`,y)) ⇒
+						op match {
+							case `mul` => MathTerm3(x, mul, y )
+							case `add` ⇒ (neg ,MathTerm3(x, op, y))
+							case `sub` ⇒ (neg ,MathTerm3(x, op, y))
+							case _ ⇒ MathTerm3(xv, op, yv)
+						}
+
+					case (x,yv@MathTerm2(`neg`,y)) ⇒
+						op match {
+							case `mul` ⇒
+								x match {
+									case xv:Digit if !xv.overNegative => MathTerm3(xv.negative, mul, y )
+									case _ ⇒ (neg, MathTerm3(x, mul,y) )
+								}
+
+							case `add` ⇒ MathTerm3(x, sub, y)
+							case `sub` ⇒ MathTerm3(x, add, y)
+							case _ ⇒ MathTerm3(x, op, yv)
+						}
+					case (xv@MathTerm2(`neg`,x), y) ⇒
+						op match {
+							case `mul` ⇒
+								y match{
+									case yv:Digit if !yv.overNegative  => MathTerm3(x, mul, yv.negative )
+									case _ ⇒ (neg, MathTerm3(x, mul,y))
+								}
+
+							case `add` ⇒ MathTerm3(y, sub, x)
+							case `sub` ⇒ (neg ,MathTerm3(x, add, y))
+							case _ ⇒ MathTerm3(xv, op, y)
+						}
+
 					case (x, y: Digit1) ⇒
 						op match {
 							case `mul` ⇒ x
@@ -219,7 +239,11 @@ object Calculate {
 							case `sqr` ⇒ MathTerm3(ff, pow, C4)
 							case _ ⇒ TrigonometryCalc.calc(MathTerm2(op, x))
 						}
-
+					case x@MathTerm2(`neg`, ff) ⇒
+						op match {
+							case `neg` ⇒ ff
+							case _ ⇒ TrigonometryCalc.calc(MathTerm2(op, x))
+						}
 
 					case x ⇒ TrigonometryCalc.calc( MathTerm2(op, x))
 				}
