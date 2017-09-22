@@ -4,6 +4,7 @@ import com.kos.ariphmetica.math.{C0, C1, CalcException, Func1, Operator}
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.functions.ArithFun
 import com.kos.ariphmetica.math.terms._
+import com.kos.ariphmetica.math.terms.compose.ComposeTerm
 
 /**
   * Дифференцированте функции arg по dx
@@ -41,6 +42,7 @@ object Difference {
 
 		def ^(a: MathTerm) = {
 			a match {
+				//	case _:Digit ⇒ C0 //Не будет выполнено никогда, так как a содержит dx
 				case MathConst(x) ⇒ if (x == dx) C1 else C0
 				case _ ⇒ ^!(a, dx)
 			}
@@ -103,6 +105,7 @@ object Difference {
 					C0
 
 			case _:Digit ⇒ C0 //Digit
+			case x :ComposeTerm ⇒ x.dif(dx,^!)
 //			case x :ArithFun ⇒ UndefinedDiff(x,dx)
 //			case x :UndefinedDiff ⇒ x
 			case x ⇒ CalcException.differenceNotSupportElement(x)

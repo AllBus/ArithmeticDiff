@@ -99,4 +99,16 @@ class CompositeTest extends FlatSpec with Matchers {
 			calc2(f) should equal(res(r))
 		}
 	}
+
+	"pow composite" should "" in {
+		val a=Seq("a^4*a^9" → "a^13",
+			"(1^2*3^4*7^7)^11" → "66706983^11",
+			//"(a^2*b^4*c^7)^11" -> "a^22*b^44*c^77",
+			"(6^7)^8" → "6^56"
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
 }

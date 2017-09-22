@@ -253,6 +253,9 @@ class SubIntDigit() extends IntDigit(0){
 	override def <(b: Digit)= false
 }
 
+/**
+  * Число 0
+  */
 class Digit0() extends IntDigit(0) {
 
 
@@ -293,6 +296,9 @@ class Digit0() extends IntDigit(0) {
 	override def overNegative: Boolean = false
 }
 
+/**
+  * Число 1
+  */
 class Digit1() extends IntDigit(1) {
 
 	override def toString: String = "1"
@@ -332,6 +338,9 @@ class Digit1() extends IntDigit(1) {
 	override def overNegative: Boolean = false
 }
 
+/**
+  * Число -1
+  */
 class Digit_1() extends IntDigit(-1) {
 
 

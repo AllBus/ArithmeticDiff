@@ -19,14 +19,13 @@ import scala.math.{Ordered, Ordering}
   * <p> 	`Digit_1`	 - -1 </p>
   * <p> 	`FloatDigit` - вещественное число </p>
   * <p> 	`MathDigitError` - неправильное число </p>
-  * <p> `OneFun` - неизвестная функция с одним аргуметом </p>
   * <p> `ArithFun` - неизвестная функция (возможно с несколькими переменными) !!!Не обрабатывается!!! </p>
   * <p> `MathTermError` - неправильный терм </p>
   */
 class MathTerm() extends Ordered[MathTerm]{
 
 	def orderValue=1
-	def compareIndex(that:MathTerm): Int ={
+	def compareIndex(that:MathTerm): Int = {
 		0
 	}
 

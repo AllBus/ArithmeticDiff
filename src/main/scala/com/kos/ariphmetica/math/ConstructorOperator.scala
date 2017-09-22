@@ -52,6 +52,11 @@ object ConstructorOperator {
 	}
 
 	/** pow */
+	def **(fg: (MathTerm, MathTerm)): MathTerm = {
+		**(fg._1,fg._2)
+	}
+
+	/** pow */
 	def **(f: MathTerm, g: MathTerm): MathTerm = {
 		g match {
 			case C1 ⇒ f

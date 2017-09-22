@@ -2,6 +2,7 @@ package com.kos.ariphmetica.math.algorithms
 
 import com.kos.ariphmetica.math.Operator.{mul, _}
 import com.kos.ariphmetica.math.terms._
+import com.kos.ariphmetica.math.terms.compose.MulTerm
 import com.kos.ariphmetica.math.{terms, _}
 
 import scala.annotation.tailrec
@@ -62,6 +63,10 @@ object CopositeFunction {
 		//todo: надо проверять наличие abs
 		var b=terms.map(extractPower).sorted
 
+		val mulTerm= new MulTerm(b)
+
+
+
 	//	println(b)
 		var (tx,tn)=b.head
 		var r=Seq.newBuilder[MathTerm]
@@ -77,6 +82,8 @@ object CopositeFunction {
 			}
 			b=b.tail
 		}
+
+
 		r+= **(tx,tn)
 		val a=r.result().sorted
 		a.tail.foldLeft(a.head)(MathTerm3(_, mul, _))
