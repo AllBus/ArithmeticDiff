@@ -1,8 +1,8 @@
 package com.kos.arithmetica
 
 import org.scalatest.{FlatSpec, Matchers}
-
 import com.kos.ariphmetica.Calculator._
+import com.kos.ariphmetica.math.terms.IntDigit
 
 class CompositeTest extends FlatSpec with Matchers {
 	init()
@@ -126,11 +126,17 @@ class CompositeTest extends FlatSpec with Matchers {
 		}
 	}
 
+	"minus composite" should "" in {
+		calc2("-9-9-11-23-45")  should equal(IntDigit(-97))
+	}
+
 	"sum composite" should "" in {
-		val a=Seq("a+b+e+c+q+c+r"→"a+b+c+c+e+q+r",
+		val a=Seq(
+
+			"a+b+e+c+q+c+r"→"2*c+a+b+e+q+r",
 			"a+b-c-e-g+h+r-f"→"a+b+h+r−c−e−f−g",
-			//"a+b-c-e-g+h+r-f-b"→"a+h+r−c−e−f−g",
-			//"a+b-c-e-g+h+r-f-b-d-t-a"→"h+r−c−d−e−f−g−t",
+			"a+b-c-e-g+h+r-f-b"→"a+h+r−c−e−f−g",
+			"a+b-c-e-g+h+r-f-b-d-t-a"→"h+r−c−d−e−f−g−t",
 			"a+b-(c+e)-(u-h)+(q-r)"→"a+b+h+q−c−e−r−u",
 			"a-b-d-c"→"a-b-c-d",
 			"a+b-(c-(e-h-r+(x1+x2+(y1-y2-(z1-z2-z3))-p-(p1+p2-p3+p4+(q1+q2)-(t1-t2)))-x5)+w-k)-u"→
@@ -148,6 +154,35 @@ class CompositeTest extends FlatSpec with Matchers {
 			"(y^7*x^3)^12" -> "x^36*y^84",
 			"(y^7+x^3)^12" -> "(y^7+x^3)^12",
 			"(x^3*c*6)^7" → "279936∙c^7∙x^21"
+
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
+
+	"add add" should "" in {
+		val a=Seq(
+			"x+x+x+x+x" → "5*x",
+			"x+y+x+z+x+x+y+x" → "2*y+5*x+z",
+		//	"7*x+x+y+x" → "9*x+y",
+		//	"7*x+x+y+7*x" → "15*x+y",
+		//	"-x-x-x-x-x" → "-5*x",
+			"x-x-x-x-x" → "-3*x"
+
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
+
+	"add sub" should "" in {
+		val a=Seq(
+			"x+y-x" → "y",
+			"2*x-4*y-x*2" → "-(4∙y)"
+			//"2*x-4*y-(7-5)*x" → "-(4∙y)"
 
 		)
 

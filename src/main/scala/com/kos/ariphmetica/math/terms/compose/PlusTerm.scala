@@ -43,9 +43,11 @@ case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends Comp
 	override def fold = {
 
 		subTerms.foldLeft(
-			addTerms.tail.foldLeft(
-				addTerms.head
-			)((x, y) ⇒ MathTerm3(x, add, y))
+			if (addTerms.isEmpty) C0 else {
+				addTerms.tail.foldLeft(
+					addTerms.head
+				)((x, y) ⇒ MathTerm3(x, add, y))
+			}
 		)((x,y) ⇒ MathTerm3(x,sub,y))
 	}
 

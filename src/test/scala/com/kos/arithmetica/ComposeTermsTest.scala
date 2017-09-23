@@ -17,7 +17,7 @@ class ComposeTermsTest extends FlatSpec with Matchers  {
 			case (x:Seq[_],p:Int) ⇒ MathTerm3(convertSeqToMul(x),pow, MathConst(p.toString))
 			case ( x:MathTerm,p :MathTerm ) ⇒ MathTerm3(x ,pow, p)
 			case ( x:Int,p :Int ) ⇒ MathTerm3(MathConst(x.toString),pow, MathConst(p.toString))
-		}.reduce(*)
+		}.reduce(*(_,_))
 	}
 
 	def convertSeqToMulTerm(a :Seq[_]): Seq[(MathTerm,MathTerm)] ={

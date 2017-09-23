@@ -23,15 +23,15 @@ class DiffTest extends FlatSpec with Matchers {
 
 
 	"function f4(x)" should "" in {
-		calc("(ln(7*x))'x") should equal(res("7/(7*x)"))
+		calc("(ln(7*x))'x") should equal(res("1/x"))
 	}
 
 
 	"function f5(x)" should "" in {
-		calc("(sin(x+y)*cos(x))'x'y") should equal(res("-(sin(x+y)∙cos(x)+sin(x)∙cos(x+y))"))
+		calc("(sin(x+y)*cos(x))'x'y") should equal(res("-(sin(x)∙cos(x+y)+sin(x+y)∙cos(x))"))
 	}
 	"function f6(x)" should "" in {
-		calc2("(4*x+9*x*x*12+4+8)'x") should equal(res("4+216*x"))
+		calc2("(4*x+9*x*x*12+4+8)'x") should equal(res("216*x+4"))
 	}
 	"trigonometry" should "" in {
 
@@ -69,8 +69,8 @@ class DiffTest extends FlatSpec with Matchers {
 	}
 
 	"divide" should "" in {
-		val a=Seq("1/x" → "-1*x^-2",
-			"-7/(x+3)" → "7*(3+x)^-2",
+		val a=Seq("-1/x" → "x^-2",
+			"-7/(x+3)" → "(3+x)^-2*7",
 			"-1/(4*x+3)" → "4*(3+4*x)^-2")
 
 		for ((f,r) ← a) {

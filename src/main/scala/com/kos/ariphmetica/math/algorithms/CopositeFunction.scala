@@ -51,35 +51,35 @@ object CopositeFunction {
 
 	//implicit val mathOrdering = new Ordering[MathTerm]()
 
-
-	def composeMul(terms: Seq[MathTerm]): MathTerm = {
-		//todo: надо проверять наличие abs
-		var b = terms.map(extractPower).sorted
-
-		//	println(b)
-		var (tx, tn) = b.head
-		var r = Seq.newBuilder[(MathTerm, MathTerm)]
-		b = b.tail
-		while (b.nonEmpty) {
-			val (hx, hn) = b.head
-			if (tx == hx) {
-				tn = MathTerm3(tn, `add`, hn)
-			} else {
-				r += tx → tn //**(tx,tn)
-				tx = hx
-				tn = hn
-			}
-			b = b.tail
-		}
-
-
-		r += tx -> tn //**(tx,tn)
-
-		//val a=r.result().sorted
-		MulTerm(r.result())
-		//a.tail.foldLeft(a.head)(MathTerm3(_, mul, _))
-
-	}
+//
+//	def composeMul(terms: Seq[MathTerm]): MathTerm = {
+//		//todo: надо проверять наличие abs
+//		var b = terms.map(extractPower).sorted
+//
+//		//	println(b)
+//		var (tx, tn) = b.head
+//		var r = Seq.newBuilder[(MathTerm, MathTerm)]
+//		b = b.tail
+//		while (b.nonEmpty) {
+//			val (hx, hn) = b.head
+//			if (tx == hx) {
+//				tn = MathTerm3(tn, `add`, hn)
+//			} else {
+//				r += tx → tn //**(tx,tn)
+//				tx = hx
+//				tn = hn
+//			}
+//			b = b.tail
+//		}
+//
+//
+//		r += tx -> tn //**(tx,tn)
+//
+//		//val a=r.result().sorted
+//		MulTerm(r.result())
+//		//a.tail.foldLeft(a.head)(MathTerm3(_, mul, _))
+//
+//	}
 
 	//	def composeMul(head: MathTerm, tail: Seq[MathTerm]): MathTerm = {
 	//
@@ -91,27 +91,27 @@ object CopositeFunction {
 
 
 
-	def communicative(op: CommunicateOperator, a: MathTerm): Seq[MathTerm] = {
-		a match {
-			case MathTerm3(x, `op`, y) ⇒ communicative(op, x) ++ communicative(op, y)
-			case x ⇒ Seq(x)
-		}
-	}
-
-	def communicative(op: CommunicateOperator, termsComps: Seq[MathTerm]): MathTerm = {
-
-		val terms = termsComps.map(^>)
-
-		op match {
-			case `add` ⇒
-				val a = terms.sorted(MathTerm)
-				a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
-			case `mul` ⇒ composeMul(terms)
-			case _ ⇒
-				val a = terms.sorted(MathTerm)
-				a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
-		}
-	}
+//	def communicative(op: CommunicateOperator, a: MathTerm): Seq[MathTerm] = {
+//		a match {
+//			case MathTerm3(x, `op`, y) ⇒ communicative(op, x) ++ communicative(op, y)
+//			case x ⇒ Seq(x)
+//		}
+//	}
+//
+//	def communicative(op: CommunicateOperator, termsComps: Seq[MathTerm]): MathTerm = {
+//
+//		val terms = termsComps.map(^>)
+//
+//		op match {
+//			case `add` ⇒
+//				val a = terms.sorted(MathTerm)
+//				a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
+//			case `mul` ⇒ composeMul(terms)
+//			case _ ⇒
+//				val a = terms.sorted(MathTerm)
+//				a.tail.foldLeft(a.head)(MathTerm3(_, op, _))
+//		}
+//	}
 
 	def ^>(x: MathTerm) = compose(x)
 
@@ -138,10 +138,65 @@ object CopositeFunction {
 
 
 	def communicativeAdd(arg: MathTerm): MathTerm = {
-		//todo:
+		val terms=extractAdd(arg)
 
-		extractAdd(arg)
+		var plus=terms.addTerms
+		var minus=terms.subTerms
 
+		val resadd=Seq.newBuilder[MathTerm]
+		val ressub=Seq.newBuilder[MathTerm]
+
+		while (plus.nonEmpty && minus.nonEmpty){
+			val ph=plus.head
+			val mh=minus.head
+			if (ph< mh){
+				resadd+=ph
+				plus=plus.tail
+			}else
+			if (mh < ph){
+				ressub+=mh
+				minus=minus.tail
+			}else
+			if (ph == mh) {
+				minus=minus.tail
+				plus=plus.tail
+			}else{
+				resadd+=ph
+				plus=plus.tail
+			}
+		}
+
+		resadd++=plus
+		ressub++=minus
+
+		PlusTerm(unionAdd(resadd.result()),unionAdd(ressub.result()))
+	}
+
+	def unionAdd(terms: Seq[MathTerm]):Seq[MathTerm]={
+		if (terms.isEmpty)
+			terms
+		else {
+			var r = Seq.newBuilder[MathTerm]
+
+			var b = terms
+			var tx = b.head
+			var tn = 1
+			b = b.tail
+			while (b.nonEmpty) {
+				val hx = b.head
+				if (tx == hx) {
+					tn += 1
+				} else {
+					r += *(tn, tx)
+					tx = hx
+					tn = 1
+				}
+				b = b.tail
+			}
+
+			r += *(tn, tx)
+			r.result()
+		}
 	}
 
 	def communicativeMul(terms: Seq[(MathTerm, MathTerm)]): MathTerm = {

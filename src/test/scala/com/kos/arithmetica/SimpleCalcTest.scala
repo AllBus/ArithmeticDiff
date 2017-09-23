@@ -48,8 +48,8 @@ class SimpleCalcTest extends FlatSpec with Matchers {
 	}
 
 	"pow multiplication" should "" in {
-		checker( Seq("(7+x)^(5*8)*sin(x)^3*(x+7)^8*sin(x)^23" → "sin(x)^26*(7+x)^48",
-			"(7+x)^(5*8)*sin(x)^3*(x+7)^8" → "sin(x)^3*(7+x)^48",
+		checker( Seq("(7+x)^(5*8)*sin(x)^3*(x+7)^8*sin(x)^23" → "(7+x)^48*sin(x)^26",
+			"(7+x)^(5*8)*sin(x)^3*(x+7)^8" → "(7+x)^48*sin(x)^3",
 			"x*x*x*x" → "x^4",
 			"x^2*(7*x)*x^(3*7)*y^5*x^y*y^3" → "7*x^(24+y)*y^8"
 

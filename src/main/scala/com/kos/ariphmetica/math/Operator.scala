@@ -224,12 +224,7 @@ object Operator {
 	val pow_1 = new PowFunc1("^-1",C_1)
 
 	val C1_2 = /(1,C2)
-	val pi_2 = /(pi, C2)
-	val pi_3_2 = /(MathTerm3(C3, mul, pi), C2)
-	val pi_3 = /(pi, C3)
-	val pi_4 = /(pi, C4)
-	val pi_6 = /(pi, C6)
-	val pi_12 = /(pi, C12)
+
 
 	val sqrt = new PowFunc1(" √",C1_2)
 
@@ -269,6 +264,12 @@ object Operator {
 	val empty = new Operator(" ",0)
 
 
+	val pi_2 = /(pi, C2)
+	val pi_3_2 = /(MathTerm3(C3, mul, pi), C2)
+	val pi_3 = /(pi, C3)
+	val pi_4 = /(pi, C4)
+	val pi_6 = /(pi, C6)
+	val pi_12 = /(pi, C12)
 	val CSQRT_2 = MathTerm2(sqrt,C2)
 	val CSQRT_3 = MathTerm2(sqrt,C3)
 

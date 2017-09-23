@@ -134,7 +134,7 @@ object MainExample {
 				"((a+1)*(sin(x)+cos(y)))'y'a",
 				"((a+1)*(sin(x)+cos(y)))'a'y",
 				"((a+1)*(-sin(y)))'a",
-				"(sin(y)*cox(x))'y",
+				"(sin(y)*cos(x))'y",
 				"(x^2)'x+(x*y^3)'y",
 				"(x^5)'x'x'x",
 				"(sin(x)+cos(x+y+z)^2-sqrt(2*x^2+5*y^3))'x'y'z",

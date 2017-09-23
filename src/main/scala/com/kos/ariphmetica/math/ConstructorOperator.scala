@@ -39,6 +39,15 @@ object ConstructorOperator {
 //	}
 
 	/** mul */
+	def *(f: Int, g: MathTerm): MathTerm = {
+		f match {
+			case 1 ⇒ g
+			case 0 ⇒ C0
+			case _ ⇒ MathTerm3(IntDigit(f), mul, g)
+		}
+	}
+
+	/** mul */
 	def *(f: MathTerm, g: MathTerm): MathTerm = {
 		val r = MathTerm3(f, mul, g)
 		r match {
