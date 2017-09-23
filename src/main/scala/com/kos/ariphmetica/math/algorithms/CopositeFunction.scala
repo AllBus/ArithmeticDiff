@@ -1,9 +1,9 @@
 package com.kos.ariphmetica.math.algorithms
 
+import com.kos.ariphmetica.math.{CommunicateOperator, PowFunc1}
 import com.kos.ariphmetica.math.Operator.{mul, _}
 import com.kos.ariphmetica.math.terms._
 import com.kos.ariphmetica.math.terms.compose.{MulTerm, PlusTerm}
-import com.kos.ariphmetica.math.{C1, terms, _}
 
 import scala.annotation.tailrec
 
@@ -12,7 +12,7 @@ import scala.annotation.tailrec
   */
 object CopositeFunction {
 
-	import ConstructorOperator._
+	import com.kos.ariphmetica.math.ConstructorOperator._
 
 	def replaceDivToPow(term: MathTerm): MathTerm = {
 
@@ -124,7 +124,10 @@ object CopositeFunction {
 			case x: MulTerm ⇒ communicativeMul(mulTermFlatten(x.terms))
 			case x: PlusTerm ⇒ communicativeAdd(x)
 			//	case MathTerm3(x, op: CommunicateOperator, y) ⇒ communicative(op, communicative(op, x) ++ communicative(op, y))
+			case MathTerm3(x, `pow`, y) ⇒ communicativeMul( mulTermFlat(x , y))// MathTerm3(^>(x), pow, ^>(y))
 			case MathTerm3(x, op, y) ⇒ MathTerm3(^>(x), op, ^>(y))
+
+			case MathTerm2(f:PowFunc1, x) ⇒ communicativeMul(mulTermFlat(x ,f.powValue))//MathTerm2(f, ^>(x))
 			case MathTerm2(f, x) ⇒ MathTerm2(f, ^>(x))
 			case DiffTerm(f, dx: String) ⇒ DiffTerm(^>(f), dx)
 
@@ -164,8 +167,13 @@ object CopositeFunction {
 
 		r += tx -> tn //**(tx,tn)
 
-		//val a=r.result().sorted
-		MulTerm(r.result())
+		val res=r.result()
+		if (res.size == 1)
+			**(res.head)
+		else {
+			//val a=r.result().sorted
+			MulTerm(res)
+		}
 	}
 
 	def extractAdd(arg: MathTerm): PlusTerm = {
@@ -195,9 +203,8 @@ object CopositeFunction {
 			}
 		}
 
-		loop(arg,true)
-
-		 PlusTerm(plus.sorted,minus.sorted)
+		loop(arg,op = true)
+		PlusTerm(plus.sorted,minus.sorted)
 	}
 
 	def extractMul(arg: MathTerm): Seq[(MathTerm, MathTerm)] = {
@@ -211,11 +218,9 @@ object CopositeFunction {
 	def mulTermFlat(term: MathTerm , m: MathTerm): Seq[(MathTerm, MathTerm)] = term match {
 		//todo: надо проверять наличие abs
 		//case (x: MulTerm, C1) ⇒ 			mulTermFlatten(x.terms)
-		case x: MulTerm ⇒	mulTermFlatten(x.terms.map(aw ⇒ aw._1 → *(m, aw._2)))
+		case x: MulTerm ⇒ mulTermFlatten(x.terms.map(aw ⇒ aw._1 → *(m, aw._2)))
 		case MathTerm3(x, `mul`, y) ⇒ 	mulTermFlat(x , m) ++ mulTermFlat(y , m)
-		case MathTerm2(`sqrt`, x) ⇒	 	mulTermFlat(x , *(m, C1_2))
-		case MathTerm2(`pow_1`, x) ⇒	mulTermFlat(x , *(m, C_1))
-		case MathTerm2(`sqr`, x) ⇒ 	 	mulTermFlat(x , *(m, C2))
+		case MathTerm2(op:PowFunc1,x) ⇒mulTermFlat(x , *(m, op.powValue))
 		case MathTerm3(x, `pow`, y) ⇒  mulTermFlat(x , *(m, y))
 		case x ⇒ Seq(^>(x) → ^>(m))
 	}
@@ -229,9 +234,7 @@ object CopositeFunction {
 		//todo: надо проверять наличие abs
 		head match {
 			case MathTerm3(x, `pow`, y) ⇒ (x, y)
-			case MathTerm2(`pow_1`, x) ⇒ (x, C_1)
-			case MathTerm2(`sqr`, x) ⇒ (x, C2)
-			case MathTerm2(`sqrt`, x) ⇒ (x, C1_2)
+			case MathTerm2(op:PowFunc1,x) ⇒ (x,op.powValue)
 			case x ⇒ (x, C1)
 		}
 	}
@@ -271,9 +274,7 @@ object CopositeFunction {
 	private[this] def mulpow(m: MathTerm, arg: MathTerm): MathTerm = {
 
 		arg match {
-			case MathTerm2(`sqrt`, x) ⇒ mulpow(*(m, C1_2), x)
-			case MathTerm2(`pow_1`, x) ⇒ mulpow(*(m, C_1), x)
-			case MathTerm2(`sqr`, x) ⇒ mulpow(*(m, C2), x)
+			case MathTerm2(op:PowFunc1,x) ⇒ mulpow(*(m, op.powValue), x)
 			case MathTerm3(x, `pow`, y: Digit) ⇒ mulpow(*(m, y), x)
 			case MathTerm3(x, `pow`, y) ⇒ mulpow(*(m, dpow(y)), x)
 			case x ⇒ checkPowAbs(composePow(x), m)
@@ -285,9 +286,7 @@ object CopositeFunction {
 		def >(x: MathTerm) = composePow(x)
 
 		arg match {
-			case MathTerm2(f@`sqrt`, x) ⇒ mulpow(C1_2, x)
-			case MathTerm2(f@`pow_1`, x) ⇒ mulpow(C_1, x)
-			case MathTerm2(f@`sqr`, x) ⇒ mulpow(C2, x)
+			case MathTerm2(op:PowFunc1,x) ⇒  mulpow(op.powValue, x)
 			case MathTerm3(x, `pow`, y: Digit) ⇒ mulpow(y, x)
 			case MathTerm3(x, `pow`, y) ⇒ mulpow(dpow(y), x)
 

@@ -15,7 +15,10 @@ class CompositeTest extends FlatSpec with Matchers {
 		"x/x*x" -> "x",
 		"x/(x*x*x)" -> "x^-2",
 		"x^(12-9)/x^(6*3)" -> "x^-15",
-		"x^(7+9)*x^(sin(12))*y*x^(11-3)" -> "x^(24+sin(12))*y"
+		"x^(7+9)*x^(sin(12))*y*x^(11-3)" -> "x^(24+sin(12))*y",
+		"5^4/5^2" → "25",
+		"√(x^7)" → "x^(1/2*7)",
+		"12^(-(9-7))*12^(9*8)" → "12^(70)"
 		)
 
 		for ((f,r) ← a) {
@@ -102,7 +105,7 @@ class CompositeTest extends FlatSpec with Matchers {
 
 	"pow composite" should "" in {
 		val a=Seq("a^4*a^9" → "a^13",
-			"(1^2*3^4*7^7)^11" → "66706983^11",
+			//"(1^2*3^4*7^7)^11" → "66706983^11",
 			//"(a^2*b^4*c^7)^11" -> "a^22*b^44*c^77",
 			"(6^7)^8" → "6^56"
 		)
@@ -142,8 +145,9 @@ class CompositeTest extends FlatSpec with Matchers {
 	"pow mul" should "" in {
 		val a=Seq(
 			"7*(x^3*y^7)^84" → "7∙x^252∙y^588",
-			"(y^7*x^3)^12" -> "x^36*y*84",
-			"(y^7+x^3)^12" -> "(x^3+y^7)^12"
+			"(y^7*x^3)^12" -> "x^36*y^84",
+			"(y^7+x^3)^12" -> "(y^7+x^3)^12",
+			"(x^3*c*6)^7" → "279936∙c^7∙x^21"
 
 		)
 

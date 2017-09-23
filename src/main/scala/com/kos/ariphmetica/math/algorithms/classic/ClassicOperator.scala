@@ -3,7 +3,7 @@ package com.kos.ariphmetica.math.algorithms.classic
 import com.kos.ariphmetica.math.ConstructorOperator.{*, --, ---, ^^}
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.terms._
-import com.kos.ariphmetica.math.{C0, C1, C10, C_1, CalcException, pi, №}
+import com.kos.ariphmetica.math.{ CalcException, №}
 
 object ClassicOperator {
 

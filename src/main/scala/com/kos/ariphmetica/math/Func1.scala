@@ -22,6 +22,13 @@ class Func1(val name: String) {
 
 }
 
+/**
+  * Функция значения степени
+  * @param name название
+  * @param powValue значение степени
+  */
+class PowFunc1(name:String,val powValue:MathTerm) extends Func1(name)
+
 class UnknownDiff(val func: Func1,val count:Int=1) extends Func1("'"){
 	override def toString: String = func.toString+name*count
 

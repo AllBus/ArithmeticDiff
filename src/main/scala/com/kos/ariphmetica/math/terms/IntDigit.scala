@@ -3,7 +3,7 @@ package com.kos.ariphmetica.math.terms
 import com.kos.ariphmetica.Num
 import com.kos.ariphmetica.math.algorithms.IntMath
 import com.kos.ariphmetica.math._
-
+import com.kos.ariphmetica.math.Operator._
 /**
   * Created by Kos on 22.03.2017.
   */

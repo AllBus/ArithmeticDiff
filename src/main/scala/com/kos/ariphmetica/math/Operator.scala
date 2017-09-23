@@ -180,6 +180,26 @@ object Operator {
 		}
 	}
 
+	val pi = MathConst("pi")
+	val e = MathConst("e")
+	val IMPL_1 = MathConst("i")
+	val C0 = new Digit0
+	val C1 = new Digit1
+	val C_1 = new Digit_1
+
+	val C2 = new IntDigit(2)
+	val C3 = new IntDigit(3)
+	val C4 = new IntDigit(4)
+	val C6 = new IntDigit(6)
+	val C10 = new IntDigit(10)
+	val C12 = new IntDigit(12)
+	val C180 = new IntDigit(180)
+
+
+
+
+
+
 	val add = new CommunicateOperator("+",4)
 	val sub = new Operator("−",4)
 
@@ -200,9 +220,18 @@ object Operator {
 	val rad = new Func1("rad")
 	val exp = new Func1("exp")
 
-	val sqr = new Func1("^2")
-	val pow_1 = new Func1("^-1")
-	val sqrt = new Func1(" √")
+	val sqr = new PowFunc1("^2",C2)
+	val pow_1 = new PowFunc1("^-1",C_1)
+
+	val C1_2 = /(1,C2)
+	val pi_2 = /(pi, C2)
+	val pi_3_2 = /(MathTerm3(C3, mul, pi), C2)
+	val pi_3 = /(pi, C3)
+	val pi_4 = /(pi, C4)
+	val pi_6 = /(pi, C6)
+	val pi_12 = /(pi, C12)
+
+	val sqrt = new PowFunc1(" √",C1_2)
 
 	val neg = new Func1("-")
 
@@ -239,6 +268,9 @@ object Operator {
 	//======================
 	val empty = new Operator(" ",0)
 
+
+	val CSQRT_2 = MathTerm2(sqrt,C2)
+	val CSQRT_3 = MathTerm2(sqrt,C3)
 
 	//=========================
 

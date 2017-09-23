@@ -1,8 +1,8 @@
 package com.kos.ariphmetica.math.terms
 
 import com.kos.ariphmetica.Num
-import com.kos.ariphmetica.math.{C0, C1, C10, C12, C180, C2, C3, C4, C6, C_1, CalcException}
-
+import com.kos.ariphmetica.math.CalcException
+import com.kos.ariphmetica.math.Operator._
 /**
   * Created by Kos on 24.03.2017.
   */

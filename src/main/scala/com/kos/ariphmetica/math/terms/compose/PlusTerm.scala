@@ -1,5 +1,4 @@
 package com.kos.ariphmetica.math.terms.compose
-import com.kos.ariphmetica.math.{C0, C1}
 import com.kos.ariphmetica.math.ConstructorOperator.**
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.terms.{Digit, MathConst, MathTerm, MathTerm3}

@@ -1,6 +1,6 @@
 package com.kos.ariphmetica.math.algorithms
 
-import com.kos.ariphmetica.math.{C0, C1, CalcException, Func1, Operator}
+import com.kos.ariphmetica.math.{ CalcException, Func1, Operator}
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.functions.ArithFun
 import com.kos.ariphmetica.math.terms._
