@@ -120,6 +120,7 @@ object CopositeFunction {
 		arg match {
 			case MathTerm3(x, `mul`, y) ⇒ communicativeMul(extractMul(x) ++ extractMul(y))
 			case MathTerm3(x, `add`, y) ⇒ communicativeAdd(arg)
+			case MathTerm3(x, `sub`, y) ⇒ communicativeAdd(arg)
 			case x: MulTerm ⇒ communicativeMul(mulTermFlatten(x.terms))
 			case x: PlusTerm ⇒ communicativeAdd(x)
 			//	case MathTerm3(x, op: CommunicateOperator, y) ⇒ communicative(op, communicative(op, x) ++ communicative(op, y))
@@ -131,25 +132,84 @@ object CopositeFunction {
 		}
 	}
 
-	def communicativeAdd(atg: MathTerm): MathTerm = {
+
+
+	def communicativeAdd(arg: MathTerm): MathTerm = {
 		//todo:
-		???
+
+		extractAdd(arg)
+
 	}
 
 	def communicativeMul(terms: Seq[(MathTerm, MathTerm)]): MathTerm = {
-		//todo:
-		???
+
+		var b = terms.sortBy(_._1)
+
+		//println(b)//todo: log out
+		var (tx, tn) = b.head
+		var r = Seq.newBuilder[(MathTerm, MathTerm)]
+		b = b.tail
+		while (b.nonEmpty) {
+			val (hx, hn) = b.head
+			if (tx == hx) {
+				tn = MathTerm3(tn, `add`, hn)
+			} else {
+				r += tx → tn //**(tx,tn)
+				tx = hx
+				tn = hn
+			}
+			b = b.tail
+		}
+
+
+		r += tx -> tn //**(tx,tn)
+
+		//val a=r.result().sorted
+		MulTerm(r.result())
+	}
+
+	def extractAdd(arg: MathTerm): PlusTerm = {
+
+		var plus: List[MathTerm] = Nil
+		var minus: List[MathTerm] = Nil
+
+		def loop(term:MathTerm,op:Boolean):Unit = {
+			term match {
+				case x:PlusTerm ⇒
+					x.addTerms.foreach(loop(_,op))
+					x.subTerms.foreach(loop(_,!op) )
+				case MathTerm3(x, `add`, y) ⇒
+					loop(x, op)
+					loop(y, op)
+				case MathTerm3(x, `sub`, y) ⇒
+					loop(x, op)
+					loop(y, !op)
+				case x ⇒
+					if (op) plus ::= ^>(x) else minus ::= ^>(x)
+//					Seq(
+//					if (op)
+//						PlusTerm(Seq(x),Nil)
+//					else
+//						PlusTerm(Nil,Seq(x))
+//					)
+			}
+		}
+
+		loop(arg,true)
+
+		 PlusTerm(plus.sorted,minus.sorted)
 	}
 
 	def extractMul(arg: MathTerm): Seq[(MathTerm, MathTerm)] = {
 		arg match {
 			case x: MulTerm ⇒ mulTermFlatten(x.terms)
 			case MathTerm3(x, `mul`, y) ⇒ extractMul(x) ++ extractMul(y)
-			case x ⇒ mulTermFlatten(Seq( extractPower(x)))
+			case x ⇒ mulTermFlat(x,C1)
 		}
 	}
 
 	def mulTermFlat(term: MathTerm , m: MathTerm): Seq[(MathTerm, MathTerm)] = term match {
+		//todo: надо проверять наличие abs
 		//case (x: MulTerm, C1) ⇒ 			mulTermFlatten(x.terms)
 		case x: MulTerm ⇒	mulTermFlatten(x.terms.map(aw ⇒ aw._1 → *(m, aw._2)))
 		case MathTerm3(x, `mul`, y) ⇒ 	mulTermFlat(x , m) ++ mulTermFlat(y , m)

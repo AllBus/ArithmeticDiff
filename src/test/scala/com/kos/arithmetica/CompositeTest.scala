@@ -15,7 +15,7 @@ class CompositeTest extends FlatSpec with Matchers {
 		"x/x*x" -> "x",
 		"x/(x*x*x)" -> "x^-2",
 		"x^(12-9)/x^(6*3)" -> "x^-15",
-		"x^(7+9)*x^(sin(12))*y*x^(11-3)" -> "y*x^(24+sin(12))"
+		"x^(7+9)*x^(sin(12))*y*x^(11-3)" -> "x^(24+sin(12))*y"
 		)
 
 		for ((f,r) ← a) {
@@ -116,6 +116,35 @@ class CompositeTest extends FlatSpec with Matchers {
 		val a=Seq("7*8*9*x*4*a" → "2016∙a∙x"
 			//"12*x/4" → "4∙x",
 			//"7*x/4" → "1.75∙x",
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
+
+	"sum composite" should "" in {
+		val a=Seq("a+b+e+c+q+c+r"→"a+b+c+c+e+q+r",
+			"a+b-c-e-g+h+r-f"→"a+b+h+r−c−e−f−g",
+			//"a+b-c-e-g+h+r-f-b"→"a+h+r−c−e−f−g",
+			//"a+b-c-e-g+h+r-f-b-d-t-a"→"h+r−c−d−e−f−g−t",
+			"a+b-(c+e)-(u-h)+(q-r)"→"a+b+h+q−c−e−r−u",
+			"a-b-d-c"→"a-b-c-d",
+			"a+b-(c-(e-h-r+(x1+x2+(y1-y2-(z1-z2-z3))-p-(p1+p2-p3+p4+(q1+q2)-(t1-t2)))-x5)+w-k)-u"→
+				"a+b+e+k+p3+t1+x1+x2+y1+z2+z3-c-h-p-p1-p2-p4-q1-q2-r-t2-u-w-x5-y2-z1"
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
+
+	"pow mul" should "" in {
+		val a=Seq(
+			"7*(x^3*y^7)^84" → "7∙x^252∙y^588",
+			"(y^7*x^3)^12" -> "x^36*y*84",
+			"(y^7+x^3)^12" -> "(x^3+y^7)^12"
+
 		)
 
 		for ((f,r) ← a) {

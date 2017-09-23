@@ -61,5 +61,5 @@ case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends Comp
 		addTerms.exists(predicate) || subTerms.exists(predicate)
 	}
 
-	override def toString = fold.toString
+	override def toString = fold.toString // "{+"+addTerms.toString()+" -"+subTerms.toString()+" }" // fold.toString
 }
