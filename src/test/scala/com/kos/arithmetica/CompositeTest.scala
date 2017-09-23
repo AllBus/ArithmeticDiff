@@ -111,4 +111,15 @@ class CompositeTest extends FlatSpec with Matchers {
 			calc2(f) should equal(res(r))
 		}
 	}
+
+	"mul composite" should "" in {
+		val a=Seq("7*8*9*x*4*a" → "2016∙a∙x"
+			//"12*x/4" → "4∙x",
+			//"7*x/4" → "1.75∙x",
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
 }

@@ -28,7 +28,7 @@ class DiffTest extends FlatSpec with Matchers {
 
 
 	"function f5(x)" should "" in {
-		calc("(sin(x+y)*cos(x))'x'y") should equal(res("-sin(x+y)∙cos(x)+(-sin(x)∙cos(x+y))"))
+		calc("(sin(x+y)*cos(x))'x'y") should equal(res("-(sin(x+y)∙cos(x)+sin(x)∙cos(x+y))"))
 	}
 	"function f6(x)" should "" in {
 		calc2("(4*x+9*x*x*12+4+8)'x") should equal(res("4+216*x"))

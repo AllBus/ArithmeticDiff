@@ -3,9 +3,9 @@ package com.kos.ariphmetica.math.terms.compose
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math._
 import com.kos.ariphmetica.math.terms._
-import com.kos.ariphmetica.math.ConstructorOperator.**
+import com.kos.ariphmetica.math.ConstructorOperator._
 
-class MulTerm(val terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
+case class MulTerm(terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 
 	override def orderValue: Int = 8
 
@@ -34,7 +34,7 @@ class MulTerm(val terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 					pow.dif(^(f), ^(g), f, g)
 				}else{//f(x)^a
 					pow.difLeft(^(f), f, g)
-				} → t)
+				}) → t
 				difTerm::=t
 			}else{
 				if (cp){//a^f(x)
@@ -50,20 +50,20 @@ class MulTerm(val terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 			return C0
 		}
 
-		new MulTerm((new PlusTerm(hasDif.map{ d ⇒
-			var a=(d._1,C1)::Nil
+		MulTerm((PlusTerm(hasDif.map{ d ⇒
+			var a:List[(MathTerm,MathTerm)]=(d._1,C1)::Nil
 			difTerm.foreach{ q ⇒ if (q ne d._2)	a::=q }
-			new MulTerm(a)
+			MulTerm(a)
 		},Nil) → C1) :: unDif)
 
 	}
 
 	override def flatMap: MulTerm = {
-		new MulTerm(terms.flatMap {
+		MulTerm(terms.flatMap {
 			case (x: MulTerm, C1) ⇒
 				x.terms
 			case (x: MulTerm, p: MathTerm) ⇒
-				x.terms.map(aw ⇒ aw._1 → MathTerm3(p, mul, aw._2))
+				x.terms.map(aw ⇒ aw._1 → *(p, aw._2))
 			case x ⇒ Seq(x)
 		})
 	}
@@ -72,7 +72,7 @@ class MulTerm(val terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 		terms.tail.foldLeft(**(terms.head))((x, y) ⇒ MathTerm3(x, mul, **(y)))
 	}
 
-	override def sort = new MulTerm(terms.sortBy(x ⇒ x._1))
+	override def sort = MulTerm(terms.sortBy(x ⇒ x._1))
 
 	override def forall(predicate: (MathTerm) ⇒ Boolean) = {
 		terms.forall(x ⇒ predicate(x._1) && predicate(x._2))

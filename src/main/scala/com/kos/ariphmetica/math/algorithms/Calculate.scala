@@ -4,6 +4,7 @@ import com.kos.ariphmetica.Num
 import com.kos.ariphmetica.math._
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.terms._
+import com.kos.ariphmetica.math.terms.compose.ComposeTerm
 
 /**
   * Created by Kos on 22.03.2017.
@@ -249,7 +250,7 @@ object Calculate {
 				}
 
 			case DiffTerm(f,dx:String) ⇒ DiffTerm(digit(^(f)),dx)
-
+			case x: ComposeTerm ⇒ digit(^(x.fold))
 			case x ⇒ x
 		}
 	}
@@ -387,10 +388,11 @@ object Calculate {
 							case `rad` ⇒ !!(Math.toRadians(x.value))
 							case _ ⇒ MathTerm2(op, x)
 						}
+
 					case x ⇒ MathTerm2(op, x)
 				}
 			case DiffTerm(f,dx:String) ⇒ DiffTerm(digit(^(f)),dx)
-
+			case x: ComposeTerm ⇒ digit(^(x.fold))
 			case x ⇒ x
 		}
 	}

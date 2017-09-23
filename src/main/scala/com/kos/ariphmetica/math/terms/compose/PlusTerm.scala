@@ -4,7 +4,7 @@ import com.kos.ariphmetica.math.ConstructorOperator.**
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.terms.{Digit, MathConst, MathTerm, MathTerm3}
 
-class PlusTerm(val addTerms:Seq[MathTerm], val subTerms:Seq[MathTerm]) extends ComposeTerm{
+case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends ComposeTerm{
 
 	override def orderValue: Int = 9
 
@@ -17,7 +17,7 @@ class PlusTerm(val addTerms:Seq[MathTerm], val subTerms:Seq[MathTerm]) extends C
 			}
 		}
 
-		new PlusTerm(addTerms.map(^).filterNot(C0 == _),subTerms.map(^).filterNot(C0 == _))
+		PlusTerm(addTerms.map(^).filterNot(C0 == _),subTerms.map(^).filterNot(C0 == _))
 	}
 
 	override def flatMap:PlusTerm = {
@@ -38,7 +38,7 @@ class PlusTerm(val addTerms:Seq[MathTerm], val subTerms:Seq[MathTerm]) extends C
 			case x ⇒ subB+=x
 		}
 
-		new PlusTerm(addB.result(),subB.result())
+		PlusTerm(addB.result(),subB.result())
 	}
 
 	override def fold = {
@@ -50,7 +50,7 @@ class PlusTerm(val addTerms:Seq[MathTerm], val subTerms:Seq[MathTerm]) extends C
 		)((x,y) ⇒ MathTerm3(x,sub,y))
 	}
 
-	override def sort = new PlusTerm(addTerms.sorted,subTerms.sorted)
+	override def sort = PlusTerm(addTerms.sorted,subTerms.sorted)
 
 
 	override def forall(predicate: (MathTerm) ⇒ Boolean) = {
