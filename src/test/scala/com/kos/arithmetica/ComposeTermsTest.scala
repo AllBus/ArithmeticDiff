@@ -138,4 +138,12 @@ class ComposeTermsTest extends FlatSpec with Matchers  {
 	}
 
 
+	"PlusNone" should "" in {
+		PlusTerm(Nil,Nil).fold should equal(C0)
+	}
+
+
+	"MulNone" should "" in {
+		MulTerm(Nil).fold should equal(C1)
+	}
 }

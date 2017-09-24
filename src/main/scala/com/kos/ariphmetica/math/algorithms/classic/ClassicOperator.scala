@@ -20,15 +20,7 @@ object ClassicOperator {
 		}
 	}
 
-	def containsDiff(arg:MathTerm):Boolean ={
-		arg match {
-			case MathConst(x) ⇒ false
-			case MathTerm3(f, _, g) ⇒ containsDiff(f) || containsDiff(g)
-			case MathTerm2(_, f) ⇒ containsDiff(f)
-			case DiffTerm(_ ,_) ⇒ true
-			case _ ⇒ false //Digit
-		}
-	}
+
 
 	/**
 	  * Определить значения функциям

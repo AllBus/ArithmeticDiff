@@ -5,6 +5,7 @@ import com.kos.ariphmetica.math.terms._
 import com.kos.ariphmetica.math._
 import com.sun.org.apache.xpath.internal.functions.FunctionMultiArgs
 import org.parboiled2._
+import shapeless.HNil
 
 /**
   * Created by Kos on 19.03.2017.
@@ -88,7 +89,7 @@ abstract class ArithParser(val input: ParserInput
 		( word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { functionMethod }
 		| word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { functionAbsMethod }
 		| word ~> MathConst
-		| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word ~> (DiffTerm(_: MathTerm, _)))
+		| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word.? ~> {(a:MathTerm, b:Option[String]) ⇒ DiffTerm(a: MathTerm, b.getOrElse("x")) })
 		| "|" ~ top ~ "|" ~> (a ⇒ MathTerm2(Operator.abs, a))
 		| "√" ~ values ~> { (a: MathTerm) ⇒ MathTerm2(Operator.sqrt, a) }
 		)

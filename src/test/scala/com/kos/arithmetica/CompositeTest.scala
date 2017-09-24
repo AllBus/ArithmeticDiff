@@ -190,4 +190,18 @@ class CompositeTest extends FlatSpec with Matchers {
 			calc2(f) should equal(res(r))
 		}
 	}
+
+	"diff" should "" in {
+		val a=Seq(
+			"(a*c*x*q)'x" → "a*c*q",
+			"(a(x)*b(x))'x" →"a'(x)*b(x)+a(x)*b'(x)"
+			//"(a(x)*b(x)*c(x)*d(x))'x" → ""
+
+
+		)
+
+		for ((f,r) ← a) {
+			calc2(f) should equal(res(r))
+		}
+	}
 }

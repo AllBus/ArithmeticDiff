@@ -2,8 +2,9 @@ package com.kos.ariphmetica.math
 
 import com.kos.ariphmetica.Num
 import com.kos.ariphmetica.math.algorithms.Difference
-import com.kos.ariphmetica.math.functions.{ArithFun}
+import com.kos.ariphmetica.math.functions.ArithFun
 import com.kos.ariphmetica.math.terms._
+import com.kos.ariphmetica.math.terms.compose.ComposeTerm
 
 //
 //case class ^^^(val x: Any) {
@@ -69,6 +70,17 @@ object Operator {
 			case _ ⇒ false //Digit
 		}
 
+	}
+
+	def containsDiff(arg:MathTerm):Boolean ={
+		arg match {
+			case MathConst(x) ⇒ false
+			case MathTerm3(f, _, g) ⇒ containsDiff(f) || containsDiff(g)
+			case MathTerm2(_, f) ⇒ containsDiff(f)
+			case DiffTerm(_ ,_) ⇒ true
+			case x :ComposeTerm ⇒ x.exists(containsDiff)
+			case _ ⇒ false //Digit
+		}
 	}
 
 

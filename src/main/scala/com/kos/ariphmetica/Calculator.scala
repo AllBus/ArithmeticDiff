@@ -21,6 +21,7 @@ object Calculator {
 	def diff(x:String) = Operator.diff(parse(x))
 	def calc(x:String) =  Calculate.simpleCalc(CopositeFunction.composePow(CopositeFunction.compose(diff(x))))
 	def calc2(x:String) = Calculate.simpleCalc(CopositeFunction.composePow(CopositeFunction.compose(calc(x))))
+	def parseCompose(x:String) = CopositeFunction.compose(parse(x))
 	//def calc3(x:String) = Calculate.simpleCalc(CopositeFunction.composePow(CopositeFunction.compose(calc2(x))))
 
 	/**
@@ -95,7 +96,7 @@ object Calculator {
 	  * @return true если содержит иначе false
 	  */
 	def containsDiff(f:MathTerm):Boolean = {
-		ClassicOperator.containsDiff(f)
+		Operator.containsDiff(f)
 	}
 
 	/**

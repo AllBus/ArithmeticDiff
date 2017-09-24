@@ -29,11 +29,14 @@ object Main {
 				var i = 0
 				do {
 					i += 1
+//					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
+//					println(s"$i} " + OutExpression(dif))
+//					dif =Calculator.simpleCalc(dif) // CopositeFunction.compose(dif) //
+					dif =CopositeFunction.compose(dif)
+					println(s"$i) " + OutExpression(dif))
+
 					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
 					println(s"$i} " + OutExpression(dif))
-					dif =Calculator.simpleCalc(dif) // CopositeFunction.compose(dif) //
-				//	dif =Calculate.simpleCalc(CopositeFunction.composePow(CopositeFunction.compose(dif)))
-					println(s"$i) " + OutExpression(dif))
 
 				} while (Calculator.containsDiff(dif) && i < 100)
 

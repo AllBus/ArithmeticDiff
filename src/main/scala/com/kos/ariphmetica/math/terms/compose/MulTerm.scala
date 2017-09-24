@@ -59,6 +59,8 @@ case class MulTerm(terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 	}
 
 	override def flatMap: MulTerm = {
+
+
 		MulTerm(terms.flatMap {
 			case (x: MulTerm, C1) ⇒
 				x.terms
@@ -69,7 +71,10 @@ case class MulTerm(terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 	}
 
 	override def fold: MathTerm = {
-		terms.tail.foldLeft(**(terms.head))((x, y) ⇒ MathTerm3(x, mul, **(y)))
+		if (terms.isEmpty)
+			C1
+		else
+			terms.tail.foldLeft(**(terms.head))((x, y) ⇒ MathTerm3(x, mul, **(y)))
 	}
 
 	override def sort = MulTerm(terms.sortBy(x ⇒ x._1))
@@ -82,5 +87,7 @@ case class MulTerm(terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 		terms.exists(x ⇒ predicate(x._1) || predicate(x._2))
 	}
 
-	override def toString = fold.toString
+	def termsString:String  = terms.map(x => if (x._2==C1) x._1.toString else x._1.toString+ "→"+x._2.toString ).mkString("*{"," ","}")
+
+	override def toString = termsString //fold.toString
 }
