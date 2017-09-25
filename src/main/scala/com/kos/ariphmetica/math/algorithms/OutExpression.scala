@@ -16,7 +16,7 @@ object OutExpression {
 	def apply(d: MathTerm): String = {
 
 		d match {
-			case MathTerm3(f, `pow`, g) => s"${^(f)} $pow ${^(g)}"
+			case MathTerm3(f, `pow`, g) => s"${^(f)} $pow ${^/(g)}"
 			case MathTerm3(f, `log`, g) => s"$log(${apply(f)}, ${apply(g)})"
 
 			case MathTerm3(f, `sub`, g) => s"${addition(d)}"
@@ -47,7 +47,7 @@ object OutExpression {
 	private[this] def ^(d: MathTerm): String = {
 
 		d match {
-			case MathTerm3 (f, `pow`, g) => s"${^(f)} $pow ${^(g)}"
+			case MathTerm3 (f, `pow`, g) => s"${^(f)} $pow ${^/(g)}"
 			case MathTerm3 (f, `log`, g) => s"$log(${apply(f)}, ${apply(g)})"
 
 			case MathTerm3(f, `sub`, g) => s"(${addition(d)})"

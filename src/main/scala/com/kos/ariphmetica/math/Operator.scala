@@ -66,12 +66,17 @@ object Operator {
 			case UndefinedDiff(mathTerm,_) ⇒ cont(mathTerm)
 			//case OneFun(_,f) ⇒ cont(f)
 			case x: ArithFun ⇒ x.args.exists(cont)
-
+			case x :ComposeTerm ⇒ x.exists(cont)
 			case _ ⇒ false //Digit
 		}
 
 	}
 
+	/**
+	  * Проверить что функция содержит терм дифференцирования
+	  * @param arg функция
+	  * @return true если содержит терм дифференцирования, false иначе
+	  */
 	def containsDiff(arg:MathTerm):Boolean ={
 		arg match {
 			case MathConst(x) ⇒ false
@@ -215,7 +220,7 @@ object Operator {
 	val add = new CommunicateOperator("+",4)
 	val sub = new Operator("−",4)
 
-	val mul = new CommunicateOperator("∙",5)
+	val mul = new CommunicateOperator("×",5)
 
 	val div = new Operator("÷",5)
 	val mod = new Operator("mod",5)

@@ -66,6 +66,8 @@ object Difference {
 		}
 
 		arg match {
+
+
 			case MathTerm3(f, op: Operator, g) ⇒
 				val fx = contain(dx)(f)
 				val gx = contain(dx)(g)
@@ -95,6 +97,8 @@ object Difference {
 			//				throw CalcException.undefinedFunction(s"${x.funName}")
 
 			case MathConst(x) ⇒ if (x == dx) C1 else C0
+			case _:Digit ⇒ C0 //Digit
+
 			case f@DiffTerm(x, sdx) ⇒
 
 				val fx = contain(dx)(f)
@@ -104,7 +108,7 @@ object Difference {
 				} else
 					C0
 
-			case _:Digit ⇒ C0 //Digit
+
 			case x :ComposeTerm ⇒ x.dif(dx,^!)
 //			case x :ArithFun ⇒ UndefinedDiff(x,dx)
 //			case x :UndefinedDiff ⇒ x
@@ -126,6 +130,7 @@ object Difference {
 				case MathTerm3(f, op, g) ⇒ MathTerm3(cont(f), op, cont(g))
 				case MathTerm2(op, f) ⇒ MathTerm2(op, cont(f))
 				case DiffTerm(f, dx) ⇒ dif(dx, ^!)(f)
+				case x:ComposeTerm ⇒ x.map(cont)
 				case x ⇒ x
 			}
 		}

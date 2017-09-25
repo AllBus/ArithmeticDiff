@@ -194,8 +194,12 @@ class CompositeTest extends FlatSpec with Matchers {
 	"diff" should "" in {
 		val a=Seq(
 			"(a*c*x*q)'x" → "a*c*q",
-			"(a(x)*b(x))'x" →"a'(x)*b(x)+a(x)*b'(x)"
-			//"(a(x)*b(x)*c(x)*d(x))'x" → ""
+			"(a(x)*b(x))'x" →"a'(x)*b(x)+a(x)*b'(x)",
+			"(8+a(x)+b(x))'x" → "a'(x)+b'(x)",
+			"(a(x)+sin(3*x)+c(4*x)+d(x))'x" → "a'(x)+3*cos(3*x)+4*c'(4*x)+d'(x)",
+			"(a(x+2)*b(x)*c(x))'" → "c'(x)∙a(2+x)∙b(x)+b'(x)∙a(2+x)∙c(x)+a'(2+x)∙b(x)∙c(x)",
+			"(a(x*5)*b(x)*c(x))'" → "c'(x)∙a(5∙x)∙b(x)+b'(x)∙a(5∙x)∙c(x)+5∙a'(5∙x)∙b(x)∙c(x)"
+			//"(a(x)*b(x)*c(x)*d(x))'x" → "a'(x)∙b(x)∙c(x)∙d(x)+b'(x)∙a(x)∙c(x)∙d(x)+c'(x)∙a(x)∙b(x)∙d(x)+d'(x)∙a(x)∙b(x)∙c(x)"
 
 
 		)

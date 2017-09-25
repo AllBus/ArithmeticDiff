@@ -1,6 +1,7 @@
 package com.kos.ariphmetica.math.terms.compose
 import com.kos.ariphmetica.math.ConstructorOperator.**
 import com.kos.ariphmetica.math.Operator._
+import com.kos.ariphmetica.math.algorithms.Difference
 import com.kos.ariphmetica.math.terms.{Digit, MathConst, MathTerm, MathTerm3}
 
 case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends ComposeTerm{
@@ -8,11 +9,12 @@ case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends Comp
 	override def orderValue: Int = 9
 
 	override def dif(dx: String, ^! : (MathTerm, String) ⇒ MathTerm) = {
+
 		def ^(a: MathTerm) = {
 			a match {
 				case _:Digit ⇒ C0
 				case MathConst(x) ⇒ if (x == dx) C1 else C0
-				case _ ⇒ ^!(a, dx)
+				case _ ⇒ Difference.dif(dx,^!)(a) // ^!(a, dx)
 			}
 		}
 
@@ -62,7 +64,20 @@ case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends Comp
 		addTerms.exists(predicate) || subTerms.exists(predicate)
 	}
 
-	def termsString:String  ="{+{"+addTerms.mkString(" ")+"} -{"+subTerms.mkString(" ")+"} }"
+
+	def map(cont: (MathTerm) ⇒ MathTerm):MathTerm={
+		PlusTerm(
+			addTerms.map(cont),
+			subTerms.map(cont)
+		)
+	}
+
+	def termsString:String  =
+		(if (addTerms.nonEmpty) "+{"+addTerms.mkString(" ")+"}" else "") +
+		(if (subTerms.nonEmpty)	"-{"+subTerms.mkString(" ")+"}" else "")
+
+
+
 
 	override def toString = termsString// fold.toString
 }

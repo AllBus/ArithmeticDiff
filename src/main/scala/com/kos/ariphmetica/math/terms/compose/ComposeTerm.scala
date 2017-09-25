@@ -3,6 +3,8 @@ package com.kos.ariphmetica.math.terms.compose
 import com.kos.ariphmetica.math.terms.MathTerm
 
 abstract class ComposeTerm extends MathTerm{
+	def map(cont: (MathTerm) ⇒ MathTerm):MathTerm
+
 	def dif(dx:String, ^! : (MathTerm, String) ⇒ MathTerm): MathTerm
 	def flatMap : MathTerm
 	def fold : MathTerm
