@@ -25,17 +25,18 @@ object Main {
 			try {
 				var dif = Calculator.parseWithSpace(s) //Распарсить строку с пробелами и получаем выражение которое можно вычислить
 				println(s"Вычисляем: " + OutExpression(dif))
-
+				dif = CopositeFunction.compose(dif)
+				println(s"0) " + OutExpression(dif))
 				var i = 0
 				do {
 					i += 1
-//					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
-//					println(s"$i} " + OutExpression(dif))
-//					dif =Calculator.simpleCalc(dif) // CopositeFunction.compose(dif) //
-					dif =CopositeFunction.compose(dif)
-					println(s"$i) " + OutExpression(dif))
-
 					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
+					println(s"$i} " + OutExpression(dif))
+					dif = Calculate.simpleCalc(CopositeFunction.compose(dif)) //Calculator.simpleCalc(dif) // CopositeFunction.compose(dif) //
+//					dif =CopositeFunction.compose(dif)
+//					println(s"$i) " + OutExpression(dif))
+//
+//					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
 					println(s"$i} " + OutExpression(dif))
 
 				} while (Calculator.containsDiff(dif) && i < 100)

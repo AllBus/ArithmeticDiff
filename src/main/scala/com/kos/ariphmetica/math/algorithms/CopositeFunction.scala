@@ -3,7 +3,7 @@ package com.kos.ariphmetica.math.algorithms
 import com.kos.ariphmetica.math.{CommunicateOperator, PowFunc1}
 import com.kos.ariphmetica.math.Operator.{mul, _}
 import com.kos.ariphmetica.math.terms._
-import com.kos.ariphmetica.math.terms.compose.{MulTerm, PlusTerm}
+import com.kos.ariphmetica.math.terms.compose.{ComposeTerm, MulTerm, PlusTerm}
 
 import scala.annotation.tailrec
 
@@ -385,6 +385,7 @@ object CopositeFunction {
 			case MathTerm3(x, op, y) ⇒ MathTerm3(>(x), op, >(y))
 			case MathTerm2(f, x) ⇒ MathTerm2(f, >(x))
 			case DiffTerm(f, dx: String) ⇒ DiffTerm(>(f), dx)
+			case x:ComposeTerm ⇒ x.map(>)
 			case x ⇒ x
 		}
 	}

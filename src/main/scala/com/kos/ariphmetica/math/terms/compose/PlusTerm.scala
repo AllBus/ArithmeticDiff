@@ -79,5 +79,5 @@ case class PlusTerm(addTerms:Seq[MathTerm], subTerms:Seq[MathTerm]) extends Comp
 
 
 
-	override def toString = termsString// fold.toString
+	override def toString = fold.toString // termsString// fold.toString
 }

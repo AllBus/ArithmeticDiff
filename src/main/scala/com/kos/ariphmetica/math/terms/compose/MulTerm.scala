@@ -133,5 +133,5 @@ case class MulTerm(terms: Seq[(MathTerm, MathTerm)]) extends ComposeTerm {
 
 	def termsString:String  = terms.map(x => if (x._2==C1) x._1.toString else x._1.toString+ "→"+x._2.toString ).mkString("*{"," ","}")
 
-	override def toString = termsString //fold.toString
+	override def toString =  fold.toString //termsString //fold.toString
 }

@@ -32,7 +32,7 @@ object OutExpression {
 			case MathTerm2(`abs`, f) => s"|${apply(f)}|"
 			case MathTerm2(op: Func1, f) => s"$op(${apply(f)})"
 			case DiffTerm(mathTerm,dx) ⇒ s"(${apply(mathTerm)})'$dx"
-			case x:ComposeTerm ⇒ s"(${x.toString})"
+			case x:ComposeTerm ⇒ s"${apply(x.fold)}"
 			case _ => d.toString
 		}
 	}
@@ -61,7 +61,7 @@ object OutExpression {
 			case MathTerm2(`abs`, f) => s"|${apply(f)}|"
 			case MathTerm2(op: Func1, f) => s"$op(${apply(f)})"
 			case DiffTerm(mathTerm,dx) ⇒ s"(${apply(mathTerm)})'$dx"
-			case x:ComposeTerm ⇒ s"(${x.toString})"
+			case x:ComposeTerm ⇒ s"(${apply(x.fold)})"
 			case _ => d.toString
 		}
 	}
