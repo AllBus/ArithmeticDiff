@@ -1,7 +1,8 @@
 package com.kos.ariphmetica
 
 import com.kos.ariphmetica.math.Operator
-import com.kos.ariphmetica.math.algorithms.{Calculate, CopositeFunction, OutExpression}
+import com.kos.ariphmetica.math.Operator.C1
+import com.kos.ariphmetica.math.algorithms.{Calculate, CopositeFunction, OutExpression, Replacement}
 import com.kos.ariphmetica.math.terms.MathTerm
 import com.kos.ariphmetica.parser.{ArithParser, PowArithParser, StandardArithParser}
 
@@ -23,8 +24,22 @@ object Main {
 			s=StdIn.readLine()
 			s!="*"}){
 			try {
-				var dif = Calculator.parseWithSpace(s) //Распарсить строку с пробелами и получаем выражение которое можно вычислить
+
+				val ss = {
+					s.split(';')
+				}
+
+				val repl = ss.tail.map( t ⇒
+					val (v,n) = t.span( _ != '=')
+					println(s"$v to ${n.tail}")
+					Calculator.parseWithSpace(v) →
+					Calculator.parseWithSpace(n.tail)
+				)
+
+				var dif = Calculator.parseWithSpace(ss(0)) //Распарсить строку с пробелами и получаем выражение которое можно вычислить
+
 				println(s"Вычисляем: " + OutExpression(dif))
+
 				dif = CopositeFunction.compose(dif)
 				println(s"0) " + OutExpression(dif))
 				var i = 0
@@ -39,10 +54,13 @@ object Main {
 //					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
 					println(s"$i} " + OutExpression(dif))
 
-				} 
+				}
 
 				val out = Calculator.fullCalc(dif)
 				println("Ответ:  " + OutExpression(out))
+				dif = repl.foldLeft(out)((d, v) ⇒ Replacement.replace(d, v._1, v._2))
+				dif = Calculator.fullCalc(dif)
+				println("Подставим значения:  " + OutExpression(dif))
 			}catch {
 				case _: Throwable =>
 					println("В выражении ошибка")
