@@ -4,12 +4,14 @@ import com.kos.ariphmetica.math.Operator
 import com.kos.ariphmetica.math.algorithms.CopositeFunction
 import com.kos.ariphmetica.math.algorithms.classic.ClassicOperator
 import com.kos.ariphmetica.math.terms.MathConst
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 /**
   * Created by Kos on 23.03.2017.
   */
 
-class MainTest extends FlatSpec with Matchers {
+class MainTest extends AnyFlatSpec with should.Matchers {
 
 	"A sum" should "two value" in {
 		2+4 should be (6)

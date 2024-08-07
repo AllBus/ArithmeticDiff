@@ -50,7 +50,7 @@ case class MathTerm2(func:Func1,arg: MathTerm) extends MathTerm{
 	}
 }
 
-case class MathTerm3(left:MathTerm,operator: Operator,right: MathTerm) extends MathTerm{
+	case class MathTerm3(left:MathTerm,operator: Operator,right: MathTerm) extends MathTerm{
 	override def toString = {
 		s"($left $operator $right)"
 

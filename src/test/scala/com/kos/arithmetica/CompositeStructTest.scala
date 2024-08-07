@@ -1,12 +1,14 @@
 package com.kos.arithmetica
 
 import com.kos.ariphmetica.Calculator.init
-import org.scalatest.{FlatSpec, Matchers}
 import com.kos.ariphmetica.Calculator._
 import com.kos.ariphmetica.math.terms.MathTerm
 import com.kos.ariphmetica.math.terms.compose.{MulTerm, PlusTerm}
+import org.scalatest._
+import flatspec._
+import matchers._
 
-class CompositeStructTest extends FlatSpec with Matchers {
+class CompositeStructTest extends AnyFlatSpec with should.Matchers {
 	init()
 
 

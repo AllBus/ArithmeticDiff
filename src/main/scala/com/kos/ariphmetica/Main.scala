@@ -7,7 +7,6 @@ import com.kos.ariphmetica.parser.{ArithParser, PowArithParser, StandardArithPar
 
 import scala.io.StdIn
 import scala.util.{Failure, Success}
-
 /**
   * Created by Kos on 19.03.2017.
   */
@@ -16,6 +15,7 @@ object Main {
 	def main(args: Array[String]): Unit = {
 		//example
 		Calculator.init()
+
 
 		var s=""
 		while ({
@@ -28,7 +28,7 @@ object Main {
 				dif = CopositeFunction.compose(dif)
 				println(s"0) " + OutExpression(dif))
 				var i = 0
-				do {
+				while (Calculator.containsDiff(dif) && i < 100) {
 					i += 1
 					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
 					println(s"$i} " + OutExpression(dif))
@@ -39,7 +39,7 @@ object Main {
 //					dif = Calculator.diffStep(dif)  // Вычисление одного шага дифференцирования
 					println(s"$i} " + OutExpression(dif))
 
-				} while (Calculator.containsDiff(dif) && i < 100)
+				} 
 
 				val out = Calculator.fullCalc(dif)
 				println("Ответ:  " + OutExpression(out))

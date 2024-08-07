@@ -1,11 +1,13 @@
 package com.kos.arithmetica
 
 import com.kos.ariphmetica.math.algorithms.IntMath
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 /**
   * Created by Kos on 23.03.2017.
   */
-class MathTest extends FlatSpec with Matchers  {
+class MathTest extends AnyFlatSpec with should.Matchers  {
 
 	"even" should "" in {
 		IntMath.isEven(1) should be (false)

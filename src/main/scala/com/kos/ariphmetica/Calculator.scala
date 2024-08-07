@@ -14,7 +14,7 @@ import scala.util.{Failure, Success}
   */
 object Calculator {
 
-	private[this] var parser:String ⇒ ArithParser = new PowArithParser(_)
+	private var parser:String ⇒ ArithParser = new PowArithParser(_)
 
 
 	def res(x:String) = parse(x)

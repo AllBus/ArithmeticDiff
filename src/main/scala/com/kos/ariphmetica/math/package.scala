@@ -1,8 +1,9 @@
 package com.kos.ariphmetica
 
-import com.kos.ariphmetica.math.Operator._
-import com.kos.ariphmetica.math.terms._
+import com.kos.ariphmetica.math.Operator.*
+import com.kos.ariphmetica.math.terms.*
 
+import scala.language.implicitConversions
 import scala.languageFeature.implicitConversions
 
 /**
@@ -16,19 +17,21 @@ package object math {
 
 	//	implicit def intToDigit(value:Int): Digit = Digit(value)
 
-	implicit def tuple2ToMathTerm(value: (Func1, MathTerm)): MathTerm = new MathTerm2(value._1, value._2)
-
-	implicit def tuple3MOIToMathTerm(value: (MathTerm, Operator, Int)): MathTerm = {
+	given Conversion[(Func1, MathTerm), MathTerm] = (value) ⇒ MathTerm2(value._1, value._2)
+	given Conversion[(MathTerm, Operator, Int), MathTerm] = (value) ⇒ {
 		val right = convertIntToTerm(value._3)
 		MathTerm3(value._1, value._2, right)
 	}
 
-	implicit def tuple3IOMToMathTerm(value: (Int, Operator, MathTerm)): MathTerm = {
+	given Conversion[(Int, Operator, MathTerm), MathTerm] = (value) ⇒ {
 		val left = convertIntToTerm(value._1)
 		MathTerm3(left, value._2, value._3)
 	}
 
-	implicit def tuple3ToMathTerm(value: (MathTerm, Operator, MathTerm)): MathTerm = MathTerm(value)
+	given Conversion[(MathTerm, Operator, MathTerm), MathTerm] = (value) ⇒ {
+		MathTerm(value)
+	}
+
 
 	def №(left: MathTerm, op: Operator, right: MathTerm) = {
 		MathTerm3(left, op, right)

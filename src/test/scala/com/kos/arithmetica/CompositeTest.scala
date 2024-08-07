@@ -1,10 +1,12 @@
 package com.kos.arithmetica
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 import com.kos.ariphmetica.Calculator._
 import com.kos.ariphmetica.math.terms.IntDigit
 
-class CompositeTest extends FlatSpec with Matchers {
+class CompositeTest extends AnyFlatSpec with should.Matchers {
 	init()
 
 	"function pow" should "" in {

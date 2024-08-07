@@ -98,7 +98,7 @@ object ExtensionFun {
 	val subFloat= new SubFloatDigit()
 
 	val minOp= {
-		x:Seq[MathTerm] ⇒
+		(x:Seq[MathTerm]) ⇒
 			if (x.size<=1){
 				x
 			}else{
@@ -123,7 +123,7 @@ object ExtensionFun {
 
 
 	val maxOp= {
-		x:Seq[MathTerm] ⇒
+		(x:Seq[MathTerm]) ⇒
 			if (x.size<=1){
 				x
 			}else{
@@ -146,13 +146,5 @@ object ExtensionFun {
 			}
 	}
 
-////	for (func <- ariths){
-//		func.simpleCalc= func match {
-//			case `min` ⇒ func
-//
-//			case _ ⇒
-//		}
-//	}
-//
 }
 

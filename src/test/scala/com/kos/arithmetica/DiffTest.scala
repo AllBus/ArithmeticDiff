@@ -1,11 +1,13 @@
 package com.kos.arithmetica
 
 import com.kos.ariphmetica.Calculator._
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 /**
   * Created by Kos on 23.03.2017.
   */
-class DiffTest extends FlatSpec with Matchers {
+class DiffTest extends AnyFlatSpec with should.Matchers {
 
 	init()
 

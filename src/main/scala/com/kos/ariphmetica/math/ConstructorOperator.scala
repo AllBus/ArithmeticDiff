@@ -1,13 +1,16 @@
 package com.kos.ariphmetica.math
 
-import com.kos.ariphmetica.math.Operator._
+import com.kos.ariphmetica.math.Operator.*
 import com.kos.ariphmetica.math.terms.{IntDigit, MathTerm, MathTerm2, MathTerm3}
+
+import scala.annotation.targetName
 
 /**
   * Created by Kos on 24.03.2017.
   */
 object ConstructorOperator {
 
+	@targetName("div")
 	def /(g: MathTerm): MathTerm = {
 		№(pow_1, g)
 	}

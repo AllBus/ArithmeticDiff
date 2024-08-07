@@ -164,9 +164,7 @@ class IntDigit(val value: Long) extends Digit {
 
 	def overNegative: Boolean = value==Long.MinValue
 	def overDiv(x: IntDigit):Boolean = x.value==0 || value % x.value != 0
-	def overMul(x: IntDigit):Boolean = !(
-		IntMath.highestBitAbs(value) + IntMath.highestBitAbs(x.value)<64
-	 )
+	def overMul(x: IntDigit):Boolean = !(IntMath.highestBitAbs(value) + IntMath.highestBitAbs(x.value)<64)
 
 	def overAdd2(x:IntDigit):Boolean ={
 		!(IntMath.highestBit(Math.abs(value)|Math.abs(x.value))<63)

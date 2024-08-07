@@ -209,16 +209,15 @@ object MainExample {
 
 					var i = 0
 					//	println(s"$i > " + OutExpression(dif))
-					do {
+
+					while (Calculator.containsDiff(dif) && i < 100) {
 						i += 1
 						dif = Calculator.diffStep(dif)
 						println(s"$i } " + OutExpression(dif))
 
 						dif = Calculator.simpleCalc(dif)
 						println(s"$i > " + OutExpression(dif))
-
-
-					} while (Calculator.containsDiff(dif) && i < 100)
+					} 
 
 					//	dif= Operator.diffStep("x")(dif)
 					//	println("> "+OutExpression(dif))

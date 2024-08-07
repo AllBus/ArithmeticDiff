@@ -4,6 +4,7 @@ import com.kos.ariphmetica.Num
 import com.kos.ariphmetica.math.Operator._
 import com.kos.ariphmetica.math.terms.{MathTerm, MathTerm2, UndefinedDiff}
 import com.kos.ariphmetica.math._
+import com.kos.ariphmetica.math.given
 
 import scala.collection.immutable.Seq
 

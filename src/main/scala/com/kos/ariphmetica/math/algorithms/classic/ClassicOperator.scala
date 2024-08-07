@@ -1,13 +1,17 @@
 package com.kos.ariphmetica.math.algorithms.classic
 
-import com.kos.ariphmetica.math.ConstructorOperator.{*, --, ---, ^^}
-import com.kos.ariphmetica.math.Operator._
-import com.kos.ariphmetica.math.terms._
-import com.kos.ariphmetica.math.{ CalcException, №}
+import com.kos.ariphmetica.math.given
+import com.kos.ariphmetica.math.ConstructorOperator.*
+import com.kos.ariphmetica.math.Operator.*
+import com.kos.ariphmetica.math.terms.*
+import com.kos.ariphmetica.math.{CalcException, Func1, Operator, №}
 
 object ClassicOperator {
 
-
+	def mt(a: MathTerm, op: Operator, b: MathTerm): MathTerm3 = {
+		MathTerm3(a, op, b)
+	}
+	
 	def containsDiffVar(dx:String)(arg:MathTerm):Boolean ={
 		def cont = containsDiffVar(dx) _
 		arg match {
@@ -20,13 +24,10 @@ object ClassicOperator {
 		}
 	}
 
-
-
 	/**
 	  * Определить значения функциям
 	  */
-	def setupClassicDiff() {
-
+	def setupClassicDiff() : Unit = {
 		for (op ← func) {
 			op.dif = op match {
 				case `sin` ⇒ (f) ⇒ (cos, f)
@@ -112,7 +113,6 @@ object ClassicOperator {
 		}
 
 	}
-
 
 	//
 	//

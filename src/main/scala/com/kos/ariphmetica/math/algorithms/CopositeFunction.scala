@@ -21,10 +21,10 @@ object CopositeFunction {
 		}
 
 		term match {
-			case MathTerm3(C1, `div`, y) ⇒ (pow_1, ^(y))
-			case MathTerm3(x, `div`, y) ⇒ MathTerm3(^(x), mul, (pow_1, ^(y)))
-			case MathTerm3(x, op, y) ⇒ (^(x), op, ^(y))
-			case MathTerm2(op, y) ⇒ (op, ^(y))
+			case MathTerm3(C1, `div`, y) ⇒ MathTerm2(pow_1, ^(y))
+			case MathTerm3(x, `div`, y) ⇒ MathTerm3(^(x), mul, MathTerm2(pow_1, ^(y)))
+			case MathTerm3(x, op, y) ⇒ MathTerm3(^(x), op, ^(y))
+			case MathTerm2(op, y) ⇒ MathTerm2(op, ^(y))
 			case DiffTerm(x, dx) ⇒ DiffTerm(^(x), dx)
 			case x ⇒ x
 		}
@@ -38,10 +38,10 @@ object CopositeFunction {
 		}
 
 		term match {
-			case MathTerm3(x, `mul`, MathTerm2(`pow_1`, y)) ⇒ (^(x), `div`, ^(y))
-			case MathTerm3(x, op, y) ⇒ (^(x), op, ^(y))
-			case MathTerm2(`pow_1`, y) ⇒ (C1, div, ^(y))
-			case MathTerm2(op, y) ⇒ (op, ^(y))
+			case MathTerm3(x, `mul`, MathTerm2(`pow_1`, y)) ⇒ MathTerm3(^(x), `div`, ^(y))
+			case MathTerm3(x, op, y) ⇒ MathTerm3(^(x), op, ^(y))
+			case MathTerm2(`pow_1`, y) ⇒ MathTerm3(C1, div, ^(y))
+			case MathTerm2(op, y) ⇒ MathTerm2(op, ^(y))
 			case DiffTerm(x, dx) ⇒ DiffTerm(^(x), dx)
 			case x ⇒ x
 		}

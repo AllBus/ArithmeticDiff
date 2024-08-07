@@ -1,5 +1,6 @@
 package com.kos.ariphmetica.math.algorithms
 
+import com.kos.ariphmetica.math.given
 import com.kos.ariphmetica.Num
 import com.kos.ariphmetica.math._
 import com.kos.ariphmetica.math.Operator._
@@ -13,7 +14,7 @@ object Calculate {
 
 	def !!(x: Num): Digit = FloatDigit(x)
 
-	private[this] def digit(a: MathTerm): MathTerm = {
+	private def digit(a: MathTerm): MathTerm = {
 		a match {
 			case _ ⇒ a
 		}
@@ -277,7 +278,7 @@ object Calculate {
 							case `pow` ⇒ x ^ y //
 							case `mod` ⇒ x % y
 							case `log` ⇒ x.log(y)
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ (x, op, y)
 						}
 					case (x, y: Digit0) ⇒
 						op match {
@@ -286,7 +287,7 @@ object Calculate {
 							case `mul` ⇒ C0
 							case `div` ⇒ CalcException.divisionByZero(0)
 							case `pow` ⇒ C1 //Всё что угодно в степени 0 равно 1 (x^0 = 1)
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ (x, op, y)
 						}
 					case (x: Digit0, y) ⇒
 						op match {
@@ -294,7 +295,7 @@ object Calculate {
 							case `sub` ⇒ (neg, y)
 							case `mul` ⇒ C0
 							//case `div` ⇒ MathTerm3(x, op, y)
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ (x, op, y)
 						}
 
 					case (x, y: Digit1) ⇒
@@ -302,16 +303,16 @@ object Calculate {
 							case `mul` ⇒ x
 							case `div` ⇒ x
 							case `pow` ⇒ x
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ (x, op, y)
 						}
 					case (x: Digit1, y) ⇒
 						op match {
 							case `mul` ⇒ y
 							case `pow` ⇒ C1 // 1^y = 1
-							case _ ⇒ MathTerm3(x, op, y)
+							case _ ⇒ (x, op, y)
 						}
 
-					case (x, y) ⇒ MathTerm3(x, op, y)
+					case (x, y) ⇒ (x, op, y)
 				}
 			case MathTerm2(op: Func1, f) ⇒
 				digit(^(f)) match {

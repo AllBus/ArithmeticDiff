@@ -1,11 +1,12 @@
 package com.kos.ariphmetica.parser
 
 import com.kos.ariphmetica.math.functions.Fun
-import com.kos.ariphmetica.math.terms._
-import com.kos.ariphmetica.math._
+import com.kos.ariphmetica.math.terms.*
+import com.kos.ariphmetica.math.*
+import com.kos.ariphmetica.math.Operator.C1
 import com.sun.org.apache.xpath.internal.functions.FunctionMultiArgs
-import org.parboiled2._
-import shapeless.HNil
+import org.parboiled2.*
+
 
 /**
   * Created by Kos on 19.03.2017.
@@ -73,7 +74,7 @@ abstract class ArithParser(val input: ParserInput
 
 	def factor: Rule1[MathTerm] = rule {
 		values ~ zeroOrMore(
-			"^" ~ values ~> powMethod
+			"^" ~ values ~> (powMethod(_:MathTerm,_))
 		)
 	}
 
@@ -86,12 +87,12 @@ abstract class ArithParser(val input: ParserInput
 	}
 
 	def minusValues:  Rule1[MathTerm] = rule {
-		( word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> { functionMethod }
-		| word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> { functionAbsMethod }
-		| word ~> MathConst
-		| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word.? ~> {(a:MathTerm, b:Option[String]) ⇒ DiffTerm(a: MathTerm, b.getOrElse("x")) })
-		| "|" ~ top ~ "|" ~> (a ⇒ MathTerm2(Operator.abs, a))
-		| "√" ~ values ~> { (a: MathTerm) ⇒ MathTerm2(Operator.sqrt, a) }
+		( word ~ capture(zeroOrMore("'")) ~ "(" ~ funArguments ~ ")" ~> ( functionMethod(_:String,_ ,_) )
+			| word ~ capture(zeroOrMore("'")) ~ "|" ~ funArguments ~ "|" ~> ( functionAbsMethod(_:String,_ ,_))
+			| word ~> { (a) ⇒ MathConst(a) }
+			| "(" ~ top ~ ")" ~ zeroOrMore("'" ~ word.? ~> {(a:MathTerm, b:Option[String]) ⇒ DiffTerm(a: MathTerm, b.getOrElse("x")) })
+			| "|" ~ top ~ "|" ~> (a ⇒ MathTerm2(Operator.abs, a))
+			| "√" ~ values ~> { (a: MathTerm) ⇒ MathTerm2(Operator.sqrt, a) }
 		)
 	}
 

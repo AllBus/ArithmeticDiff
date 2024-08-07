@@ -1,14 +1,16 @@
 package com.kos.arithmetica
 
-import org.scalatest.{FlatSpec, Matchers}
-import com.kos.ariphmetica.Calculator._
+import org.scalatest.*
+import com.kos.ariphmetica.Calculator.*
 import com.kos.ariphmetica.math.terms.compose.{MulTerm, PlusTerm}
-import com.kos.ariphmetica.math._
-import com.kos.ariphmetica.math.Operator._
+import com.kos.ariphmetica.math.*
+import com.kos.ariphmetica.math.Operator.*
 import com.kos.ariphmetica.math.terms.{IntDigit, MathConst, MathTerm, MathTerm3}
-import ConstructorOperator._
+import ConstructorOperator.*
 import com.kos.ariphmetica.math.algorithms.CopositeFunction
-class ComposeTermsTest extends FlatSpec with Matchers  {
+import flatspec._
+import matchers._
+class ComposeTermsTest extends AnyFlatSpec  with should.Matchers  {
 	init()
 
 	def convertSeqToMul(a :Seq[_]): MathTerm ={
